@@ -1,7 +1,8 @@
 # The Right Edge — Second Edition
 
-A single-file animated teaching app for 2-minute futures pattern trading on
-M2K and MES. Covers the auction mechanics behind triangle breakouts, the Liar
+A single-file animated teaching app for M2K micro futures pattern trading —
+structure on the 15-minute, confirmation on the 5, entries on the 2. M2K only;
+no MES, no MNQ. Covers the auction mechanics behind triangle breakouts, the Liar
 Bar (mid-bar false breaks), the 20 EMA bounce, the four-condition close test,
 EMA period arithmetic, flag tightness grading, and a 12-question interleaved exam.
 

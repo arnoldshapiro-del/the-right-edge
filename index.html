@@ -222,7 +222,7 @@ footer b{color:var(--text)}
 
 <div class="wrap">
 <header>
-  <p class="kick">M2K · MES · 2-minute entries · 9:45–11:00 &amp; 2:00–3:30 ET</p>
+  <p class="kick">M2K only · 15 / 5 / 2-minute · entries on the 2 · 9:45–11:00 &amp; 2:00–3:30 ET</p>
   <h1>The Right Edge</h1>
   <p class="ed">SECOND EDITION — THE MECHANISM CUT</p>
   <div class="laws">
@@ -416,8 +416,8 @@ footer b{color:var(--text)}
   </div>
   <div class="rules good">
     <h3>Why condition 3 carries the weight</h3>
-    <p>It scales itself. A close above the prior bar's high means the same thing on M2K and MES,
-    on a dead tape and a fast one — <b>no tick number to memorize or re-tune.</b> If you insist on
+    <p>It scales itself. A close above the prior bar's high means the same thing on a dead M2K
+    tape and a fast one, in July and October — <b>no tick number to memorize or re-tune.</b> If you insist on
     a number, <span class="numk">0.25 × ATR(14)</span> on the 2-minute self-calibrates — but that's
     my judgment call, not a tested figure.</p>
   </div>
@@ -438,6 +438,7 @@ footer b{color:var(--text)}
   <div class="toggle" role="group" aria-label="Chart timeframe">
     <button class="on" data-tf="2">2-minute chart</button>
     <button data-tf="5">5-minute chart</button>
+    <button data-tf="15">15-minute chart</button>
   </div>
   <div class="tm">
     <div class="tmrow"><div class="tmlab"><b>One RTH session</b><span>390 min · 9:30–4:00 ET</span></div>
@@ -1290,9 +1291,9 @@ const QS=[
  {q:"Why does the pennant rate so poorly (36th of 39, only ~35% reaching target)?",
   o:["It's too small to trade","Neither line is flat, so no price is defended and the trigger moves every bar","It only forms in downtrends"],a:1,
   w:"No wall means no inventory to consume, so there's no vacuum when it 'breaks'. And because both lines converge, the entry price you were watching changes by itself every two minutes."},
- {q:"Which close-test condition scales itself across instruments and market speeds?",
+ {q:"Which close-test condition scales itself across market speeds and seasons?",
   o:["Close is above the EMA","Close clears the prior candle's high","Close is 4+ ticks above the EMA"],a:1,
-  w:"A fixed tick threshold is too tight on wide days and too loose on quiet ones. 'Clears the prior bar's high' means the same thing on M2K and MES, in July and October, with nothing to re-tune."},
+  w:"A fixed tick threshold is too tight on wide days and too loose on quiet ones. 'Clears the prior bar's high' means the same thing on a quiet M2K morning and a wild one, in July and October, with nothing to re-tune."},
  {q:"Price touches the 200 EMA on your 5-minute chart. What has it told you?",
   o:["A high-probability bounce is setting up","Stand down — price travelled a whole session's worth back, so the trend is gone","Nothing useful"],a:1,
   w:"You cannot have both setups at once. If price has come all the way back to the 200, the trend that powered the 20 EMA bounce has already ended."},
