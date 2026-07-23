@@ -1,0 +1,51 @@
+# The Right Edge — Session Notes
+
+## 2026-07-23 — Initial publish, M2K rescope, Vercel deploy
+
+### What we did
+- Located `the-right-edge-2.html` (Arnie saved it to the Desktop, not Downloads — an
+  earlier full-profile search found nothing because it had not been saved yet).
+  Verified 84,085 bytes and both sentinel strings ("THE LIAR BAR", "RESTING ORDERS").
+- Created the project folder, moved the file in as `index.html`.
+- Added `vercel.json`, `netlify.toml`, `.gitignore`, `README.md`.
+- `git init -b main`, committed, created the public GitHub repo, pushed.
+- **Rescoped the app to M2K only** after Arnie clarified mid-session that he trades
+  M2K exclusively (not MES/MNQ) on 15 / 5 / 2-minute charts:
+  - Header line rewritten
+  - Two "means the same thing on M2K and MES" teaching lines reworded to preserve the
+    scale-invariance point without a second instrument
+  - One exam question reworded ("across instruments" → "across market speeds and seasons")
+  - **Added a 15-minute button** to the EMA time machine
+- Deployed to Vercel through the GitHub integration (browser import, driven in Chrome).
+- Created both `.url` shortcuts.
+
+### What's working
+Everything, verified on the live URL — not assumed. Zero MES/MNQ references, all three
+timeframe toggles with correct arithmetic, exam scoring, narrator actually speaking,
+no console errors.
+
+### What's next
+- Optional: port the v1 "Trade or Skip" chart trainer back as Section 12.
+- Optional: PWA files (none yet).
+- Optional: gallery card in arnies-app-showcase.
+- August 1: connect Netlify (config already in repo, connect-only).
+
+### Important decisions
+- **v2 only, v1 not deployed.** Two live apps teaching the same material would split
+  attention. v1 stays on disk for the Trade-or-Skip trainer.
+- **Single-file architecture preserved.** Did not swap in trend-check-pro's external
+  `narrator.js` — it would break self-containment. The inline narrator covers all 11
+  sections and works.
+- **Vercel, not Netlify, for now.** Netlify build minutes exhausted until Aug 1.
+
+### Problems encountered
+- **The Vercel CLI was blocked by two locks, not one.** Layer 2 (`branch-guard.js`
+  vercel net) was removed on Arnie's explicit order. Layer 1 (four `vercel:*` deny
+  rules in `~\.claude\settings.json`) could NOT be removed by Claude — Claude Code's
+  safety classifier blocks edits to the permissions file. Arnie deleted those four
+  lines himself via Notepad find-and-replace; verified afterwards that the file still
+  parses as valid JSON and all 8 other protections survived.
+- The CLI turned out to be **neither installed nor authenticated** anyway, so the
+  browser import was the faster path regardless.
+- Global `CLAUDE.md` rule #1 was rewritten: "never Vercel CLI" retired and marked
+  do-not-reinstate.
