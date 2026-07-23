@@ -1,0 +1,1416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The Right Edge · Second Edition</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@400;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#080c10; --panel:#10171e; --panel2:#16202a; --line:#1e2c37; --line2:#2a3b48;
+  --amber:#f0a83c; --emerald:#3fbf8f; --coral:#ef6b5e; --blue:#5fa8d3;
+  --text:#dfe7ec; --muted:#78899a;
+  --mono:'Space Mono',ui-monospace,monospace; --ui:'Oxanium',system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--ui);
+  font-size:16px;line-height:1.62;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px 150px}
+
+/* header + laws */
+header{padding:56px 0 30px}
+.kick{font-family:var(--mono);font-size:11.5px;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--amber);margin:0 0 14px}
+h1{font-size:clamp(32px,6.6vw,60px);font-weight:800;letter-spacing:-.025em;margin:0 0 6px;line-height:1.02}
+.ed{font-family:var(--mono);color:var(--muted);font-size:13px;letter-spacing:.14em;margin:0 0 22px}
+.laws{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px;margin:26px 0 8px}
+.law{background:var(--panel);border:1px solid var(--line);border-top:3px solid var(--amber);
+  border-radius:12px;padding:18px 20px;opacity:0;transform:translateY(10px);
+  animation:lawin .7s cubic-bezier(.2,.7,.3,1) forwards}
+.law:nth-child(2){animation-delay:.25s;border-top-color:var(--emerald)}
+.law:nth-child(3){animation-delay:.5s;border-top-color:var(--blue)}
+@keyframes lawin{to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){.law{animation:none;opacity:1;transform:none}}
+.law h3{font-family:var(--mono);font-size:11px;letter-spacing:.2em;margin:0 0 8px;color:var(--amber)}
+.law:nth-child(2) h3{color:var(--emerald)} .law:nth-child(3) h3{color:var(--blue)}
+.law p{margin:0;font-size:15.5px;line-height:1.5}
+.law b{color:var(--text)}
+.law p{color:var(--muted)}
+
+/* nav */
+nav{position:sticky;top:0;z-index:40;background:rgba(8,12,16,.93);
+  backdrop-filter:blur(10px);border-bottom:1px solid var(--line);margin-bottom:46px}
+.navin{max-width:1180px;margin:0 auto;padding:0 12px;display:flex;gap:2px;overflow-x:auto;scrollbar-width:none}
+.navin::-webkit-scrollbar{display:none}
+nav a{flex:0 0 auto;padding:14px 12px;color:var(--muted);text-decoration:none;font-size:12.5px;
+  font-family:var(--mono);letter-spacing:.04em;white-space:nowrap;border-bottom:2px solid transparent;
+  transition:color .18s,border-color .18s}
+nav a:hover,nav a:focus-visible{color:var(--text)}
+nav a.on{color:var(--amber);border-bottom-color:var(--amber)}
+
+/* sections */
+section{margin:0 0 84px;scroll-margin-top:70px}
+.eyebrow{font-family:var(--mono);font-size:11.5px;letter-spacing:.2em;color:var(--muted);
+  text-transform:uppercase;margin:0 0 8px}
+.eyebrow b{color:var(--amber)}
+.lawtag{display:inline-block;font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;
+  padding:3px 9px;border-radius:4px;margin-left:10px;vertical-align:1px}
+.lt1{background:rgba(240,168,60,.13);color:var(--amber)}
+.lt2{background:rgba(63,191,143,.13);color:var(--emerald)}
+.lt3{background:rgba(95,168,211,.13);color:var(--blue)}
+h2{font-size:clamp(22px,4vw,34px);font-weight:800;letter-spacing:-.02em;margin:0 0 10px;line-height:1.14}
+.lead{color:var(--muted);margin:0 0 24px;max-width:72ch}
+.lead strong{color:var(--text);font-weight:600}
+
+/* tape */
+.tape{background:var(--panel);border:1px solid var(--line);border-radius:16px;overflow:hidden;margin-bottom:20px}
+.tapehead{display:flex;align-items:center;gap:10px;padding:11px 14px;border-bottom:1px solid var(--line);
+  background:var(--panel2);flex-wrap:wrap}
+.sym{font-family:var(--mono);font-size:12px;letter-spacing:.1em;color:var(--muted)}
+.sym b{color:var(--text)}
+.spacer{flex:1}
+.btn{background:transparent;border:1px solid var(--line2);color:var(--text);border-radius:8px;
+  padding:7px 14px;font-family:var(--ui);font-size:13.5px;font-weight:700;cursor:pointer;
+  transition:background .16s,border-color .16s,color .16s}
+.btn:hover{border-color:var(--amber);color:var(--amber)}
+.btn:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+.btn.pri{background:var(--amber);border-color:var(--amber);color:#0b0f13}
+.btn.pri:hover{background:#ffbe5c;color:#0b0f13}
+.btn.sm{padding:5px 10px;font-size:12px}
+.btn[disabled]{opacity:.35;cursor:not-allowed}
+canvas{display:block;width:100%;touch-action:manipulation}
+.scrub{display:flex;align-items:center;gap:12px;padding:11px 16px;border-top:1px solid var(--line);
+  background:var(--panel2)}
+input[type=range]{-webkit-appearance:none;appearance:none;flex:1;height:4px;border-radius:3px;
+  background:var(--line2);outline:none}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:17px;height:17px;border-radius:50%;
+  background:var(--amber);cursor:pointer;border:3px solid var(--panel2)}
+input[type=range]::-moz-range-thumb{width:15px;height:15px;border-radius:50%;background:var(--amber);
+  cursor:pointer;border:3px solid var(--panel2)}
+input[type=range]:focus-visible{outline:2px solid var(--amber);outline-offset:4px}
+.bar{font-family:var(--mono);font-size:12px;color:var(--muted);min-width:60px;text-align:right}
+
+/* decision */
+.decide{display:none;padding:16px;border-top:1px solid var(--line);background:rgba(240,168,60,.05)}
+.decide.show{display:block;animation:pop .28s ease-out}
+.decide .q{font-weight:800;font-size:16.5px;margin:0 0 12px}
+.decide .q em{font-style:normal;color:var(--amber)}
+.dbtns{display:flex;gap:10px;flex-wrap:wrap}
+.dbtns .btn{flex:1 1 140px;padding:13px;font-size:15px}
+.verdict{margin-top:12px;padding:13px 16px;border-radius:10px;font-size:14.5px;display:none;
+  border:1px solid var(--line)}
+.verdict.show{display:block;animation:pop .28s ease-out}
+.verdict.ok{background:rgba(63,191,143,.09);border-color:rgba(63,191,143,.35)}
+.verdict.no{background:rgba(239,107,94,.09);border-color:rgba(239,107,94,.35)}
+.verdict b{display:block;font-size:16px;margin-bottom:4px}
+.verdict.ok b{color:var(--emerald)} .verdict.no b{color:var(--coral)}
+.verdict span{color:var(--muted)}
+@keyframes pop{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+/* rules / stats / captions */
+.rules{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--amber);
+  border-radius:12px;padding:22px 26px;margin:0 0 20px}
+.rules.bad{border-left-color:var(--coral)} .rules.good{border-left-color:var(--emerald)}
+.rules h3{font-family:var(--mono);font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--amber);margin:0 0 14px;font-weight:700}
+.rules.bad h3{color:var(--coral)} .rules.good h3{color:var(--emerald)}
+.rules ol,.rules ul{margin:0;padding-left:22px}
+.rules li{margin-bottom:10px}.rules li:last-child{margin-bottom:0}
+.rules b{color:var(--text)} .rules p{margin:0;color:var(--muted)}
+.numk{font-family:var(--mono);color:var(--amber);font-size:.9em}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin:0 0 20px}
+.stats div{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:13px 15px}
+.stats span{display:block;font-family:var(--mono);font-size:23px;font-weight:700;color:var(--amber);line-height:1.15}
+.stats em{font-style:normal;font-size:12px;color:var(--muted)}
+.cap{padding:13px 18px;border-top:1px solid var(--line);background:var(--panel2);
+  font-size:14.5px;min-height:52px;display:flex;align-items:center;color:var(--muted)}
+.cap b{color:var(--amber);margin-right:8px;font-family:var(--mono);font-size:12px;letter-spacing:.1em}
+
+/* drill */
+.drill{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:24px;margin-bottom:20px}
+.drillhead{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:16px;
+  font-family:var(--mono);font-size:12.5px;color:var(--muted);letter-spacing:.06em;flex-wrap:wrap;gap:8px}
+.drillhead b{color:var(--amber);font-size:15px}
+.choices{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}
+.choices .btn{flex:1 1 130px;padding:14px;font-size:15px}
+
+/* close-test / split */
+.split{display:grid;grid-template-columns:1fr;gap:18px;margin-bottom:20px}
+@media(min-width:860px){.split{grid-template-columns:1.15fr .85fr}}
+.checks{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px}
+.chk{display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}
+.chk:last-of-type{border-bottom:none}
+.dot{flex:0 0 22px;height:22px;border-radius:50%;border:2px solid var(--line2);margin-top:2px;
+  display:grid;place-items:center;font-size:12px;font-weight:800;color:var(--bg);transition:all .22s}
+.chk.pass .dot{background:var(--emerald);border-color:var(--emerald)}
+.chk.fail .dot{background:var(--coral);border-color:var(--coral)}
+.chk p{margin:0;font-size:14.5px;line-height:1.5}
+.chk small{display:block;color:var(--muted);font-size:12.5px;margin-top:2px}
+.final{margin-top:16px;padding:14px;border-radius:10px;text-align:center;font-size:20px;
+  font-weight:800;letter-spacing:.02em;transition:all .25s}
+.final.go{background:rgba(63,191,143,.12);color:var(--emerald)}
+.final.stop{background:rgba(239,107,94,.12);color:var(--coral)}
+
+/* time machine */
+.tm{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:24px;margin-bottom:20px}
+.tmrow{margin-bottom:18px}.tmrow:last-child{margin-bottom:0}
+.tmlab{display:flex;justify-content:space-between;font-family:var(--mono);font-size:12.5px;
+  margin-bottom:6px;gap:10px}
+.tmlab b{color:var(--text)} .tmlab span{color:var(--muted)}
+.track{position:relative;height:26px;background:var(--panel2);border-radius:6px;overflow:hidden;
+  border:1px solid var(--line)}
+.fill{position:absolute;left:0;top:0;bottom:0;border-radius:5px;transition:width .5s cubic-bezier(.4,0,.2,1)}
+.track.day{background:repeating-linear-gradient(90deg,var(--panel2) 0 22px,#1a242e 22px 24px)}
+.overflow{position:absolute;right:0;top:0;bottom:0;width:34px;
+  background:linear-gradient(90deg,transparent,var(--coral));opacity:.85}
+.toggle{display:inline-flex;background:var(--panel2);border:1px solid var(--line2);border-radius:9px;
+  padding:3px;margin-bottom:20px}
+.toggle button{background:transparent;border:none;color:var(--muted);font-family:var(--ui);
+  font-weight:700;font-size:13.5px;padding:8px 18px;border-radius:6px;cursor:pointer}
+.toggle button.on{background:var(--amber);color:#0b0f13}
+.toggle button:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+
+/* exam */
+.exam{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:26px;margin-bottom:20px}
+.exq{font-size:18px;font-weight:700;margin:0 0 16px;line-height:1.4}
+.exopts{display:grid;gap:10px}
+.exopts .btn{text-align:left;padding:14px 16px;font-size:15px;font-weight:600}
+.exopts .btn.right{background:rgba(63,191,143,.14);border-color:var(--emerald);color:var(--emerald)}
+.exopts .btn.wrong{background:rgba(239,107,94,.12);border-color:var(--coral);color:var(--coral)}
+.exwhy{margin-top:14px;padding:13px 16px;border-radius:10px;background:var(--panel2);
+  border:1px solid var(--line);color:var(--muted);font-size:14.5px;display:none}
+.exwhy.show{display:block;animation:pop .25s ease-out}
+.exwhy b{color:var(--text)}
+.hist{font-family:var(--mono);font-size:13px;color:var(--muted)}
+.hist li{margin-bottom:4px;list-style:none}
+.hist b{color:var(--amber)}
+
+/* cheat sheet */
+.sheet{counter-reset:cs;padding-left:0;margin:0}
+.sheet li{list-style:none;counter-increment:cs;position:relative;padding:16px 0 16px 52px;
+  border-bottom:1px solid var(--line);color:var(--muted)}
+.sheet li:last-child{border-bottom:none}
+.sheet li::before{content:counter(cs,decimal-leading-zero);position:absolute;left:0;top:16px;
+  font-family:var(--mono);font-size:13px;color:var(--amber);font-weight:700}
+.sheet b{color:var(--text)}
+
+/* narrator */
+.narr{position:fixed;right:16px;bottom:16px;z-index:60;background:var(--panel2);
+  border:1px solid var(--line2);border-radius:12px;padding:8px 10px;display:flex;
+  align-items:center;gap:8px;box-shadow:0 8px 30px rgba(0,0,0,.55)}
+.narr select{background:var(--panel);color:var(--text);border:1px solid var(--line2);
+  border-radius:7px;padding:5px 7px;font-family:var(--mono);font-size:11.5px;max-width:120px}
+.iconbtn{background:transparent;border:1px solid var(--line2);color:var(--text);border-radius:8px;
+  width:34px;height:34px;display:grid;place-items:center;cursor:pointer;font-size:14px}
+.iconbtn:hover{border-color:var(--amber);color:var(--amber)}
+.iconbtn.on{background:var(--amber);border-color:var(--amber);color:#0b0f13}
+.iconbtn:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+@media(max-width:560px){.narr select{display:none}}
+
+footer{border-top:1px solid var(--line);padding-top:26px;color:var(--muted);font-size:14px}
+footer b{color:var(--text)}
+.tick{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--emerald);
+  margin-right:7px;vertical-align:middle}
+.savehint{font-family:var(--mono);font-size:11.5px;color:var(--muted);letter-spacing:.06em}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+<header>
+  <p class="kick">M2K · MES · 2-minute entries · 9:45–11:00 &amp; 2:00–3:30 ET</p>
+  <h1>The Right Edge</h1>
+  <p class="ed">SECOND EDITION — THE MECHANISM CUT</p>
+  <div class="laws">
+    <div class="law"><h3>LAW 1 · THE WALL</h3>
+      <p><b>The flat line is the wall. The sloping line is the pressure.</b>
+      Pressure rising into a ceiling breaks up. Pressure falling onto a floor breaks down.</p></div>
+    <div class="law"><h3>LAW 2 · THE VERDICT</h3>
+      <p><b>No close, no trade.</b> Wicks are rumors. Mid-bar prices are rumors.
+      The close is the only verdict.</p></div>
+    <div class="law"><h3>LAW 3 · THE SLOPE</h3>
+      <p><b>The slope is the edge.</b> A flat EMA is chop in a costume.
+      And the tiers: <b>9 grades · 20 confirms · 200 gates.</b></p></div>
+  </div>
+</header>
+</div>
+
+<nav><div class="navin" id="nav"></div></nav>
+
+<div class="wrap">
+
+<!-- 01 THE WALL -->
+<section id="s1">
+  <p class="eyebrow"><b>01</b> / Why walls break<span class="lawtag lt1">LAW 1</span></p>
+  <h2>The wall is a real seller</h2>
+  <p class="lead">A triangle is not geometry. It's an <strong>auction with a seller parked at one
+  price</strong> — a resting order with real inventory. Every touch of the flat line eats some of it.
+  Watch the wall's size on the ladder. When the inventory hits zero, there is nothing left to
+  absorb the buying — <strong>and the break is not a prediction, it's a vacuum.</strong></p>
+  <div class="tape">
+    <div class="tapehead"><span class="sym">DEPTH&nbsp;<b>THE AUCTION</b></span>
+      <span class="spacer"></span>
+      <button class="btn pri" id="wallrun">▶ Run the wall</button>
+      <button class="btn" id="penrun">Run the pennant</button></div>
+    <canvas id="wallc" height="380" aria-label="Order ladder auction animation"></canvas>
+    <div class="cap" id="wallcap"><b>READY</b> Press play. The amber row is a seller holding 480 contracts at 100.0.</div>
+  </div>
+  <div class="rules">
+    <h3>What this buys you forever</h3>
+    <ul>
+      <li><b>Why ascending breaks up:</b> the seller at the ceiling runs out of contracts while
+        buyers keep arriving from higher and higher prices.</li>
+      <li><b>Why the throwback happens (~64%):</b> after the wall breaks, the level flips —
+        trapped shorts cover there and new buyers defend it. The old ceiling becomes the floor.
+        That's why your stop never lives at the line.</li>
+      <li><b>Why the pennant fails:</b> run it and look at the ladder. <b>No resting size anywhere.
+        Nothing to eat. Nothing to break.</b> The "trigger" moved every bar because there was
+        never a defended price. Bulkowski ranks it 36th of 39 — this is the reason.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 02 DRILL -->
+<section id="s2">
+  <p class="eyebrow"><b>02</b> / Burn it in<span class="lawtag lt1">LAW 1</span></p>
+  <h2>Which way does it break?</h2>
+  <p class="lead">Getting this backwards costs a full stop every time. Ignore the names, read the
+  shape. <strong>Ten in a row and you never think about it again.</strong> Your best streak is saved.</p>
+  <div class="drill">
+    <div class="drillhead"><span>DIRECTION DRILL</span>
+      <span>Streak <b id="d1streak">0</b> · Best <b id="d1best">0</b></span></div>
+    <canvas id="d1c" height="260" aria-label="Triangle direction drill"></canvas>
+    <div class="choices">
+      <button class="btn" data-d1="long">▲ &nbsp;LONG</button>
+      <button class="btn" data-d1="short">▼ &nbsp;SHORT</button>
+    </div>
+    <div class="verdict" id="d1v"></div>
+  </div>
+</section>
+
+<!-- 03 ASCENDING -->
+<section id="s3">
+  <p class="eyebrow"><b>03</b> / The long pattern<span class="lawtag lt1">LAW 1</span><span class="lawtag lt2">LAW 2</span></p>
+  <h2>Ascending Triangle</h2>
+  <p class="lead">Now watch the auction from Section 01 drawn as candles. The tape will stop on the
+  decision bar and ask for your call <strong>before</strong> it shows you the answer — because the
+  only rep that counts is the one made at the blank right edge.</p>
+  <div class="tape" data-tape="asc"></div>
+  <div class="stats">
+    <div><span>63%</span><em>break upward</em></div>
+    <div><span>~17%</span><em>break-even failure</em></div>
+    <div><span>~70%</span><em>reach target</em></div>
+    <div><span>64%</span><em>throw back first</em></div>
+  </div>
+  <div class="rules">
+    <h3>Rules</h3>
+    <ol>
+      <li><b>Draw only the flat line.</b> The rising floor confirms; it never triggers.</li>
+      <li><b>Take the break 50–75% of the way to the apex.</b> A tip break is exhausted.</li>
+      <li><b>Entry:</b> a 2-minute candle <b>closes</b> above the wall.</li>
+      <li><b>Stop below the last rising low</b> — never at the wall. Two in three come back to kiss it.</li>
+      <li><b>Target:</b> triangle height added to the wall.</li>
+    </ol>
+  </div>
+</section>
+
+<!-- 04 DESCENDING -->
+<section id="s4">
+  <p class="eyebrow"><b>04</b> / The short pattern<span class="lawtag lt1">LAW 1</span><span class="lawtag lt2">LAW 2</span></p>
+  <h2>Descending Triangle</h2>
+  <p class="lead">The mirror. A <strong>buyer</strong> holds the floor and sellers grind him down.
+  Same auction, upside down. Same question at the decision bar.</p>
+  <div class="tape" data-tape="desc"></div>
+  <div class="stats">
+    <div><span>64%</span><em>break downward</em></div>
+    <div><span>57%</span><em>pull back first</em></div>
+  </div>
+  <div class="rules">
+    <h3>Rules</h3>
+    <ol>
+      <li><b>Draw only the flat floor.</b> Two or more lows at one price.</li>
+      <li><b>Entry:</b> a 2-minute candle <b>closes</b> below it.</li>
+      <li><b>Stop above the last lower high.</b> The pullback to the old floor is expected.</li>
+      <li><b>Context doubles it:</b> descending inside a downtrend beats descending inside an uptrend.</li>
+      <li><b>Best version:</b> the flat line is also the opening-range low or the 10:30
+        initial-balance low. A wall everyone marked before the open is a bigger wall.</li>
+    </ol>
+  </div>
+</section>
+
+<!-- 05 THE LIAR BAR -->
+<section id="s5">
+  <p class="eyebrow"><b>05</b> / The centerpiece<span class="lawtag lt2">LAW 2</span></p>
+  <h2>The Liar Bar</h2>
+  <p class="lead">This tape contains one bar that will lie to you <strong>while it is still forming.</strong>
+  Mid-bar, price will be above the wall — and the app will stop right there, mid-lie, and ask what
+  you do. Then it shows you both futures: the trader who believed the rumor, and the one who
+  waited for the verdict.</p>
+  <div class="tape" data-tape="liar"></div>
+  <div class="rules bad" id="liarsum" style="display:none">
+    <h3>Same chart. Same pattern. One rule apart.</h3>
+    <p style="margin-bottom:10px"><b style="color:var(--coral)">The wick buyer:</b> entered 100.6
+    mid-bar on the rumor. The bar closed back inside, the wall held, and the stop hit at 99.5.
+    <b style="color:var(--coral)">−11 ticks.</b></p>
+    <p style="margin-bottom:10px"><b style="color:var(--emerald)">The close-waiter:</b> did nothing
+    when the wick lied, entered on the real close at 100.8 six bars later, and rode the trail.
+    <b style="color:var(--emerald)">+14 ticks and running.</b></p>
+    <p>That's a <b>25-tick spread</b> produced by one sentence: <b>no close, no trade.</b>
+    Every fake-out you've ever been caught in was this bar wearing a different date.</p>
+  </div>
+</section>
+
+<!-- 06 EMA BOUNCE -->
+<section id="s6">
+  <p class="eyebrow"><b>06</b> / No line to draw<span class="lawtag lt3">LAW 3</span></p>
+  <h2>The 20 EMA Bounce</h2>
+  <p class="lead">Here the wall comes to price. The 20 EMA is a moving shelf of the last 40 minutes
+  of consensus — and in a healthy trend, <strong>this is often the very same trade as your flag,</strong>
+  because the flag's lower boundary sits right on it. Not a fifth pattern. A second way of seeing
+  the one you already trade.</p>
+  <div class="tape" data-tape="ema"></div>
+  <div class="rules">
+    <h3>Rules</h3>
+    <ol>
+      <li><b>The EMA must slope your way.</b> Flat = chop in a costume = stand down.</li>
+      <li><b>The low must touch or pierce the EMA.</b> No touch, no test.</li>
+      <li><b>The close must be back on the right side of it.</b></li>
+      <li><b>The close must clear the prior candle's high.</b> Next section shows why this one carries the weight.</li>
+      <li><b>Stop below the pullback swing low</b> — the EMA moves; your stop shouldn't.</li>
+    </ol>
+  </div>
+</section>
+
+<!-- 07 CLOSE TEST -->
+<section id="s7">
+  <p class="eyebrow"><b>07</b> / Your question, answered properly<span class="lawtag lt2">LAW 2</span><span class="lawtag lt3">LAW 3</span></p>
+  <h2>How far above the EMA?</h2>
+  <p class="lead">Wrong question — and now you know why: <strong>distance to a moving line is a rumor
+  too.</strong> The line moves again next bar. Measure the candle instead. Drag the close and watch
+  which conditions survive.</p>
+  <div class="split">
+    <div class="tape" style="margin:0">
+      <div class="tapehead"><span class="sym">LIVE&nbsp;<b>CLOSE TEST</b></span></div>
+      <canvas id="ctc" height="380" aria-label="Interactive close test"></canvas>
+      <div class="scrub">
+        <span class="bar" style="min-width:auto">CLOSE</span>
+        <input type="range" id="ctclose" min="0" max="100" value="88" aria-label="Candle close price">
+        <span class="bar" id="ctlab">+0.0</span>
+      </div>
+    </div>
+    <div class="checks">
+      <div class="chk" id="c1"><div class="dot">✓</div><p>Low touched or pierced the EMA
+        <small>The test happened</small></p></div>
+      <div class="chk" id="c2"><div class="dot">✓</div><p>Close is above the EMA
+        <small>The test was passed</small></p></div>
+      <div class="chk" id="c3"><div class="dot">✓</div><p>Close clears the prior candle's high
+        <small>Buyers took control — didn't just hold on</small></p></div>
+      <div class="chk" id="c4"><div class="dot">✓</div><p>Close sits in the upper third of its own range
+        <small>Rejection, not drift</small></p></div>
+      <div class="final stop" id="ctfinal">STAND DOWN</div>
+    </div>
+  </div>
+  <div class="rules good">
+    <h3>Why condition 3 carries the weight</h3>
+    <p>It scales itself. A close above the prior bar's high means the same thing on M2K and MES,
+    on a dead tape and a fast one — <b>no tick number to memorize or re-tune.</b> If you insist on
+    a number, <span class="numk">0.25 × ATR(14)</span> on the 2-minute self-calibrates — but that's
+    my judgment call, not a tested figure.</p>
+  </div>
+  <div class="rules bad">
+    <h3>Honesty note</h3>
+    <p>No published research measures close-distance-above-EMA on intraday futures. I looked, twice.
+    The four-condition test is <b>reasoned, not backtested.</b> A disciplined default until your
+    journal says otherwise.</p>
+  </div>
+</section>
+
+<!-- 08 THE 200 -->
+<section id="s8">
+  <p class="eyebrow"><b>08</b> / Why 200 EMA bounces are rare<span class="lawtag lt3">LAW 3</span></p>
+  <h2>How much time is in that line?</h2>
+  <p class="lead">Arithmetic, not statistics — and once you see it to scale you can't unsee it.
+  The grey bar is <strong>one entire trading day.</strong></p>
+  <div class="toggle" role="group" aria-label="Chart timeframe">
+    <button class="on" data-tf="2">2-minute chart</button>
+    <button data-tf="5">5-minute chart</button>
+  </div>
+  <div class="tm">
+    <div class="tmrow"><div class="tmlab"><b>One RTH session</b><span>390 min · 9:30–4:00 ET</span></div>
+      <div class="track day"><div class="fill" style="width:100%;background:#25323d"></div></div></div>
+    <div class="tmrow"><div class="tmlab"><b>9 EMA</b><span id="l9">18 min</span></div>
+      <div class="track"><div class="fill" id="f9" style="background:var(--blue)"></div></div></div>
+    <div class="tmrow"><div class="tmlab"><b>20 EMA</b><span id="l20">40 min</span></div>
+      <div class="track"><div class="fill" id="f20" style="background:var(--amber)"></div></div></div>
+    <div class="tmrow"><div class="tmlab"><b>200 EMA</b><span id="l200">6.7 hrs</span></div>
+      <div class="track"><div class="fill" id="f200" style="background:var(--coral)"></div>
+        <div class="overflow" id="ov"></div></div></div>
+  </div>
+  <div class="rules bad">
+    <h3>The punchline</h3>
+    <p style="margin-bottom:12px">On the 2-minute, the 200 EMA holds <b>more time than the whole
+    trading day</b> — it drags overnight price into your entry chart. On the 5-minute it spans
+    <b>multiple sessions.</b></p>
+    <p>In a real trend, price returns to the 20 over and over — that <em>is</em> the trend. Price
+    reaches the 200 maybe zero to two times a day, and when it does, something has broken.
+    <b>You cannot have both setups at once:</b> if price traveled all the way back to the 200,
+    the trend that powered the 20 EMA bounce is already gone.
+    <b style="color:var(--coral)">The 200 is a gate, not a trampoline.</b></p>
+  </div>
+</section>
+
+<!-- 09 TIGHTNESS -->
+<section id="s9">
+  <p class="eyebrow"><b>09</b> / A new job for the 9<span class="lawtag lt3">LAW 3</span></p>
+  <h2>The Tightness Grader</h2>
+  <p class="lead">As an entry gate the 9 EMA is nearly redundant — eighteen minutes of price hugging
+  the candles, agreeing with gates you already have. <strong>Gates that agree don't filter.</strong>
+  But tightness is worth ~30 percentage points while any MA filter is worth 5–10, and the 9 gives
+  you the first objective definition of tight you've ever had. Drag the pullback deeper.</p>
+  <div class="tape" style="margin-bottom:14px">
+    <div class="tapehead"><span class="sym">FLAG&nbsp;<b>TIGHTNESS</b></span>
+      <span class="spacer"></span>
+      <span class="sym" id="grlab">GRADE <b style="color:var(--emerald)">A</b></span></div>
+    <canvas id="tgc" height="380" aria-label="Flag tightness grader"></canvas>
+    <div class="scrub">
+      <span class="bar" style="min-width:auto">DEPTH</span>
+      <input type="range" id="tgdepth" min="0" max="100" value="15" aria-label="Pullback depth">
+      <span class="bar" id="tglab">shallow</span>
+    </div>
+  </div>
+  <div id="grcard" class="rules good"><h3>Grade A · full size</h3>
+    <p>The pullback never <b>closes</b> below the 9. Buyers aren't giving back even eighteen
+    minutes of ground. This is the tight flag the statistics were built on.</p></div>
+  <div class="rules">
+    <h3>9 grades · 20 confirms · 200 gates</h3>
+    <ul>
+      <li><b>Never closes below the 9</b> → <span class="numk">GRADE A</span> → full size</li>
+      <li><b>Closes below the 9, holds the 20</b> → <span class="numk">GRADE B</span> → half size</li>
+      <li><b>Closes below the 20</b> → <span class="numk">NO TRADE</span> — it isn't a flag anymore</li>
+      <li><b>Drifts sideways past 15 bars (30 min)</b> → it has become a <b>rectangle.</b>
+        Box rules: close beyond the edge, target the height.</li>
+    </ul>
+    <p style="margin-top:12px"><b>One caution:</b> the 9 grades the setup. It never manages the
+    trade — your structural trail (4–6 ticks beyond swing) stays exactly as it is.</p>
+  </div>
+</section>
+
+<!-- 10 EXAM -->
+<section id="s10">
+  <p class="eyebrow"><b>10</b> / Prove it stuck</p>
+  <h2>The Exam</h2>
+  <p class="lead">Twelve questions, interleaved across everything — because mixed retrieval is what
+  moves it from "understood tonight" to "known in October." <strong>Scores are saved</strong>, so
+  run it again in a week; the second attempt is the one that makes it permanent.</p>
+  <div class="exam" id="exam"></div>
+</section>
+
+<!-- 11 NINE LINES -->
+<section id="s11">
+  <p class="eyebrow"><b>11</b> / Tape it to the monitor</p>
+  <h2>The Nine Lines</h2>
+  <ol class="sheet">
+    <li><b>The flat line is the wall; the sloping line is the pressure.</b> Ascending = LONG.
+      Descending = SHORT. Unsure? Read the shape, not the name.</li>
+    <li><b>Only the wall triggers.</b> Draw the flat line; let the slope confirm.</li>
+    <li><b>Break at 50–75% toward the apex.</b> Tip breaks are exhausted.</li>
+    <li><b>No close, no trade.</b> Wicks are rumors, mid-bar prices are rumors —
+      the close is the verdict.</li>
+    <li><b>Stops live at the last swing, never at the wall.</b> Two in three come back to kiss it,
+      because the broken wall flips into the other side's floor.</li>
+    <li><b>The slope is the edge.</b> Flat EMA = chop in a costume = stand down.</li>
+    <li><b>9 grades · 20 confirms · 200 gates.</b> Never bounce the 200.</li>
+    <li><b>Fifteen sideways bars and it's a rectangle now.</b> Box rules: close beyond the edge,
+      target the height.</li>
+    <li><b>Every number here grew on daily stock charts.</b> Log pattern + time window in the
+      Edge Journal — in a hundred trades the only table that's truly yours exists.</li>
+  </ol>
+</section>
+
+<footer>
+  <p style="margin:0 0 10px"><span class="tick"></span><b>Sources.</b> Pattern percentages are
+  Thomas Bulkowski's published equity research, daily charts, full-target measurement. The order-ladder
+  animation is a teaching model of auction mechanics, not market data.</p>
+  <p style="margin:0 0 10px"><b>Not verified:</b> the four-condition close test and the 9-EMA grading
+  ladder are reasoned rules — no published study measures either on intraday futures.</p>
+  <p style="margin:0" class="savehint" id="savehint">Progress saves on this device.</p>
+</footer>
+
+</div>
+
+<div class="narr" role="group" aria-label="Narrator">
+  <button class="iconbtn" id="nplay" aria-label="Read this section aloud">▶</button>
+  <select id="nvoice" aria-label="Narrator voice"></select>
+  <button class="iconbtn on" id="nsound" aria-label="Toggle sound effects">♪</button>
+</div>
+
+<script>
+"use strict";
+/* The Right Edge — Second Edition · engine
+   Contract is defined by index.html. Every ID referenced here exists there. */
+
+const RM = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const C = {amber:"#f0a83c",emerald:"#3fbf8f",coral:"#ef6b5e",blue:"#5fa8d3",
+  text:"#dfe7ec",muted:"#78899a",grid:"#1a242e",panel:"#10171e",panel2:"#16202a",line2:"#2a3b48"};
+const TICK = 0.10;                       // M2K tick = 0.10 index points
+const tk = pts => Math.round(pts/TICK);  // points -> ticks
+
+/* ============================ persistence ============================
+   Artifact sandbox exposes window.storage (persists across sessions).
+   Anywhere else (e.g. Netlify) we degrade to in-memory and say so. */
+const Store = (()=>{
+  const mem = {};
+  const cloud = typeof window!=="undefined" && window.storage &&
+                typeof window.storage.get === "function";
+  return {
+    kind: cloud ? "cloud" : "memory",
+    async get(k, dflt){
+      if(!cloud) return (k in mem) ? mem[k] : dflt;
+      try{ const r = await window.storage.get(k); return r ? JSON.parse(r.value) : dflt; }
+      catch(e){ return dflt; }
+    },
+    async set(k, v){
+      mem[k]=v;
+      if(!cloud) return;
+      try{ await window.storage.set(k, JSON.stringify(v)); }catch(e){}
+    }
+  };
+})();
+
+/* ============================ audio ============================ */
+let AC=null, SND=true;
+function blip(f,dur,vol,type){
+  if(!SND) return;
+  try{
+    AC = AC || new (window.AudioContext||window.webkitAudioContext)();
+    const o=AC.createOscillator(), g=AC.createGain();
+    o.type=type||"sine"; o.frequency.value=f;
+    g.gain.setValueAtTime(0,AC.currentTime);
+    g.gain.linearRampToValueAtTime(vol,AC.currentTime+.012);
+    g.gain.exponentialRampToValueAtTime(.0001,AC.currentTime+dur);
+    o.connect(g); g.connect(AC.destination); o.start(); o.stop(AC.currentTime+dur+.02);
+  }catch(e){}
+}
+const okSound  = ()=>{blip(660,.11,.07); setTimeout(()=>blip(990,.14,.06),95);};
+const noSound  = ()=>blip(200,.2,.07);
+const tickSound= ()=>blip(1400,.02,.014);
+const eatSound = ()=>blip(320,.07,.045,"triangle");
+const breakSnd = ()=>{blip(440,.1,.06);setTimeout(()=>blip(660,.1,.06),70);
+                      setTimeout(()=>blip(880,.22,.07),140);};
+
+/* ============================ canvas helpers ============================ */
+function fit(cv,h){
+  const r=cv.getBoundingClientRect(), d=window.devicePixelRatio||1;
+  const w=r.width||600, hh=h||cv.clientHeight||360;
+  cv.width=w*d; cv.height=hh*d; cv.style.height=hh+"px";
+  const x=cv.getContext("2d"); x.setTransform(d,0,0,d,0,0);
+  return {ctx:x,w:w,h:hh};
+}
+function rrect(x,rx,ry,w,h,r){
+  x.beginPath();
+  if(x.roundRect) x.roundRect(rx,ry,w,h,r);
+  else{ x.moveTo(rx+r,ry); x.arcTo(rx+w,ry,rx+w,ry+h,r); x.arcTo(rx+w,ry+h,rx,ry+h,r);
+        x.arcTo(rx,ry+h,rx,ry,r); x.arcTo(rx,ry,rx+w,ry,r); x.closePath(); }
+}
+function bubble(x,cx,cy,tx,ty,lines,col){
+  x.save();
+  let wmax=0;
+  lines.forEach((l,i)=>{ x.font=(i?'400 12px':'700 13.5px')+' Oxanium, sans-serif';
+    wmax=Math.max(wmax,x.measureText(l).width); });
+  const pw=wmax+22, ph=lines.length*17+16;
+  let bx=Math.max(6,Math.min(tx-pw/2, x.canvas.clientWidth-pw-6));
+  const by=Math.max(4,ty);
+  x.strokeStyle=col; x.globalAlpha=.5; x.lineWidth=1.4;
+  x.beginPath(); x.moveTo(cx,cy); x.lineTo(bx+pw/2,by+ph/2); x.stroke(); x.globalAlpha=1;
+  x.fillStyle="rgba(10,15,20,.95)"; rrect(x,bx,by,pw,ph,8); x.fill();
+  x.strokeStyle=col; x.globalAlpha=.55; x.stroke(); x.globalAlpha=1;
+  lines.forEach((l,i)=>{ x.font=(i?'400 12px':'700 13.5px')+' Oxanium, sans-serif';
+    x.fillStyle=i?C.muted:col; x.textAlign="left"; x.fillText(l,bx+11,by+21+i*17); });
+  x.restore();
+}
+function candle(x,X,Y,b,bw,col,glow){
+  x.strokeStyle=col; x.lineWidth=2;
+  x.beginPath(); x.moveTo(X,Y(b[1])); x.lineTo(X,Y(b[2])); x.stroke();
+  const t=Y(Math.max(b[0],b[3])), bo=Y(Math.min(b[0],b[3]));
+  x.fillStyle=col; rrect(x,X-bw/2,t,bw,Math.max(bo-t,2.5),2); x.fill();
+  if(glow && !RM){ x.globalAlpha=.22; rrect(x,X-bw/2-4,t-4,bw+8,Math.max(bo-t,2.5)+8,4);
+    x.fill(); x.globalAlpha=1; }
+}
+
+/* ============================ datasets ============================ */
+const ASC=[[92,93,91.8,92.8],[92.8,94.2,92.6,94],[94,95.5,93.8,95.2],[95.2,97,95,96.8],
+[96.8,98.5,96.6,98.2],[98.2,100,98,99.4],[99.4,99.6,97.8,98],[98,98.2,96.2,96.5],
+[96.5,96.8,95,95.3],[95.3,96.5,95.2,96.3],[96.3,97.8,96.1,97.6],[97.6,99.2,97.4,99],
+[99,100,98.8,99.2],[99.2,99.4,98,98.2],[98.2,98.4,96.9,97.1],[97.1,98.3,97,98.1],
+[98.1,99.3,97.9,99.1],[99.1,100,99,99.5],[99.5,99.7,98.6,98.8],[98.8,99,98.2,98.4],
+[98.4,99.2,98.3,99.1],[99.1,99.8,99,99.6],[99.6,101.9,99.5,101.7],[101.7,102.5,101.3,102.2],
+[102.2,102.4,100.1,100.4],[100.4,100.7,99.8,100.6],[100.6,102.1,100.5,102],
+[102,103.5,101.8,103.3],[103.3,104.9,103.1,104.7],[104.7,106.1,104.5,105.9]];
+
+const DESC=[[108,108.3,107,107.2],[107.2,107.4,105.8,106],[106,106.2,104,104.2],
+[104.2,104.4,102,102.3],[102.3,102.5,100,100.6],[100.6,102.4,100.5,102.2],
+[102.2,103.8,102,103.6],[103.6,105,103.4,104.7],[104.7,104.9,103.3,103.5],
+[103.5,103.7,101.8,102],[102,102.2,100,100.8],[100.8,102,100.7,101.8],
+[101.8,103.1,101.6,102.9],[102.9,103.1,101.5,101.7],[101.7,101.9,100.5,100.7],
+[100.7,100.9,100,100.5],[100.5,101.5,100.4,101.4],[101.4,101.6,100.6,100.8],
+[100.8,101,100,100.4],[100.4,100.6,99.9,100.2],[100.2,100.4,98.1,98.3],
+[98.3,98.5,97.1,97.4],[97.4,99.8,97.3,99.6],[99.6,100.1,99.1,99.3],[99.3,99.5,97.7,97.9],
+[97.9,98.1,96.1,96.3],[96.3,96.5,94.7,94.9],[94.9,95.1,93.5,93.7],[93.7,93.9,92.3,92.5]];
+
+const EMAC=[[90,91.5,89.8,91.3],[91.3,93,91.1,92.8],[92.8,94.6,92.6,94.4],[94.4,96.2,94.2,96],
+[96,97.4,95.8,97.2],[97.2,97.5,96,96.2],[96.2,96.4,95,95.2],[95.2,95.4,94.3,94.5],
+[94.5,96.2,93.9,96.1],[96.1,97.7,96,97.5],[97.5,99.1,97.3,98.9],[98.9,100.5,98.7,100.3],
+[100.3,101.1,99.5,99.9],[99.9,100.1,98.7,98.9],[98.9,99.1,97.9,98.1],[98.1,99.7,97.7,99.6],
+[99.6,101.3,99.5,101.1],[101.1,102.9,100.9,102.7],[102.7,104.3,102.5,104.1],
+[104.1,104.5,102.9,103.3]];
+const EMAL=[89.5,90.2,91.1,92.1,93.2,93.9,94.35,94.55,94.6,95,95.6,96.4,97.2,97.6,97.95,
+  98.2,98.7,99.5,100.5,101.4];
+
+/* Liar Bar: wall 100.0. Bar 12 wicks to 100.6 and closes 99.5 (the lie).
+   Price then trades to 98.6 — stopping the wick buyer at 99.5 (-11 ticks).
+   Bar 18, six bars later, is the true break, closing 100.8 -> 102.2 (+14 ticks). */
+const LIAR=[[97,97.6,96.8,97.5],[97.5,98.4,97.4,98.2],[98.2,99.2,98,99],
+[99,100,98.9,99.4],[99.4,99.5,98.3,98.5],[98.5,98.7,97.9,98.1],[98.1,99,98,98.9],
+[98.9,100,98.8,99.3],[99.3,99.4,98.6,98.8],[98.8,99,98.5,98.9],[98.9,99.6,98.8,99.5],
+[99.5,100,99.3,99.4],
+[99.4,100.6,99.3,99.5],                        /* 12 — THE LIAR */
+[99.5,99.6,98.8,99],[99,99.2,98.4,98.6],[98.6,99.4,98.5,99.3],[99.3,99.9,99.2,99.8],
+[99.8,100,99.6,99.9],
+[99.9,100.9,99.8,100.8],                       /* 18 — the real break */
+[100.8,101.4,100.6,101.3],[101.3,101.9,101.1,101.8],[101.8,102.4,101.6,102.2]];
+/* developing-bar path for bar 12 — index 5 is the peak of the lie */
+const LIARPATH=[99.4,99.62,99.9,100.2,100.45,100.6,100.3,99.9,99.65,99.5];
+
+/* ============================ Tape ============================ */
+class Tape{
+  constructor(host,cfg){
+    this.g=cfg; this.k=0; this.timer=null; this.playing=false; this.answered=false;
+    this.dev=null;                                  // developing-bar tick index
+    host.innerHTML=`
+      <div class="tapehead">
+        <span class="sym">${cfg.sym}&nbsp;<b>${cfg.title}</b></span>
+        <span class="spacer"></span>
+        <button class="btn sm" data-a="step">Step ▸</button>
+        <button class="btn pri" data-a="play">▶ Play</button>
+        <button class="btn sm" data-a="reset">↻</button>
+      </div>
+      <canvas height="440"></canvas>
+      <div class="cap"><b>READY</b> <span></span></div>
+      <div class="scrub">
+        <input type="range" min="0" max="${cfg.data.length-1}" value="0" aria-label="Scrub the tape">
+        <span class="bar">0 / ${cfg.data.length-1}</span>
+      </div>
+      <div class="decide">
+        <p class="q"></p><div class="dbtns"></div><div class="verdict"></div>
+      </div>`;
+    this.cv    = host.querySelector("canvas");
+    this.range = host.querySelector("input");
+    this.bar   = host.querySelector(".bar");
+    this.pbtn  = host.querySelector('[data-a="play"]');
+    this.cap   = host.querySelector(".cap span");
+    this.capL  = host.querySelector(".cap b");
+    this.dec   = host.querySelector(".decide");
+    this.decQ  = host.querySelector(".decide .q");
+    this.decB  = host.querySelector(".dbtns");
+    this.decV  = host.querySelector(".decide .verdict");
+    this.pbtn.onclick = ()=>this.toggle();
+    host.querySelector('[data-a="step"]').onclick = ()=>{this.pause();this.set(this.k+1);};
+    host.querySelector('[data-a="reset"]').onclick= ()=>{this.pause();this.answered=false;
+      this.dec.classList.remove("show");this.set(0);};
+    this.range.oninput = e=>{this.pause();this.set(+e.target.value,true);};
+    new ResizeObserver(()=>this.draw()).observe(this.cv);
+    this.set(0,true);
+  }
+  get H(){ return Math.max(300,Math.min(460,this.cv.clientWidth*0.42)); }
+  toggle(){ this.playing?this.pause():this.play(); }
+  play(){
+    if(this.k>=this.g.data.length-1){ this.answered=false;
+      this.dec.classList.remove("show"); this.set(0,true); }
+    this.playing=true; this.pbtn.textContent="❚❚ Pause";
+    this.timer=setInterval(()=>this.tickFwd(), RM?1:270);
+  }
+  pause(){ this.playing=false; clearInterval(this.timer);
+    this.pbtn.textContent = this.k>=this.g.data.length-1 ? "↻ Replay" : "▶ Play"; }
+  tickFwd(){
+    const g=this.g;
+    // developing-bar animation (the Liar Bar)
+    if(g.liar && this.k===g.liar.i && this.dev!==null){
+      if(this.dev < g.liar.path.length-1){
+        this.dev++; tickSound(); this.draw();
+        if(this.dev===g.liar.pauseAt && !this.answered){ this.pause(); this.ask(); }
+        return;
+      }
+      this.dev=null;
+    }
+    if(this.k>=g.data.length-1){ this.pause(); if(g.onEnd) g.onEnd(); return; }
+    this.set(this.k+1);
+    if(g.liar && this.k===g.liar.i){ this.dev=0; this.draw(); return; }
+    const d=g.decide;
+    if(d && this.k===d.at && !this.answered){ this.pause(); this.ask(); }
+  }
+  ask(){
+    const d = (this.g.liar && this.k===this.g.liar.i) ? this.g.liar.decide : this.g.decide;
+    if(!d) return;
+    this.decQ.innerHTML=d.q;
+    this.decB.innerHTML=d.opts.map((o,i)=>`<button class="btn" data-o="${i}">${o.label}</button>`).join("");
+    this.decV.className="verdict";
+    this.dec.classList.add("show");
+    this.decB.querySelectorAll("button").forEach(b=>b.onclick=()=>{
+      const o=d.opts[+b.dataset.o], right = o.val===d.ans;
+      this.decB.querySelectorAll("button").forEach(x=>x.disabled=true);
+      this.decV.className="verdict show "+(right?"ok":"no");
+      this.decV.innerHTML="<b>"+(right?"Correct.":"Not this time.")+"</b><span>"+d.why+"</span>";
+      right?okSound():noSound();
+      this.answered=true;
+      setTimeout(()=>{ if(!this.playing) this.play(); }, 1500);
+    });
+    blip(520,.14,.05);
+  }
+  set(k,quiet){
+    const n=this.g.data.length;
+    this.k=Math.max(0,Math.min(n-1,k));
+    this.range.value=this.k; this.bar.textContent=this.k+" / "+(n-1);
+    if(this.g.liar && this.k!==this.g.liar.i) this.dev=null;
+    const e=(this.g.ev||[]).find(x=>x.i===this.k);
+    if(e){ this.capL.textContent=e.tag||"NOTE"; this.cap.textContent=e.cap||"";
+           if(!quiet) (e.sound==="ok"?okSound():tickSound()); }
+    this.draw();
+    if(!this.playing) this.pbtn.textContent = this.k>=n-1?"↻ Replay":"▶ Play";
+  }
+  draw(){
+    const g=this.g, {ctx:x,w,h}=fit(this.cv,this.H);
+    const PL=54, PR=Math.max(96,w*0.13), PT=26, PB=34;
+    const pw=w-PL-PR, ph=h-PT-PB, n=g.data.length;
+    const step=pw/n, bw=Math.min(step*.62,18);
+    const Y=p=>PT+ph-((p-g.lo)/(g.hi-g.lo))*ph, X=i=>PL+step*(i+.5);
+    x.clearRect(0,0,w,h); x.fillStyle=C.panel; x.fillRect(0,0,w,h);
+    // grid
+    x.lineWidth=1; const sp=(g.hi-g.lo)>16?3:2;
+    for(let p=Math.ceil(g.lo/sp)*sp;p<g.hi;p+=sp){
+      x.strokeStyle=C.grid; x.beginPath(); x.moveTo(PL,Y(p)); x.lineTo(w-PR,Y(p)); x.stroke();
+      x.fillStyle="#3c4b58"; x.font='11px "Space Mono", monospace'; x.textAlign="right";
+      x.fillText(p.toFixed(0),PL-8,Y(p)+4);
+    }
+    // EMA
+    if(g.ema){
+      x.strokeStyle=C.amber; x.lineWidth=3.2; x.lineJoin="round"; x.beginPath();
+      for(let i=0;i<=this.k;i++) i?x.lineTo(X(i),Y(g.ema[i])):x.moveTo(X(i),Y(g.ema[i]));
+      x.stroke();
+      x.fillStyle=C.amber; x.font='700 12px "Space Mono", monospace'; x.textAlign="left";
+      const j=Math.min(this.k,2); x.fillText("20 EMA",X(j),Y(g.ema[j])+22);
+    }
+    // levels
+    (g.levels||[]).forEach(L=>{ if(this.k<L.from) return;
+      x.strokeStyle=L.c; x.lineWidth=3; x.setLineDash([9,6]);
+      x.beginPath(); x.moveTo(PL-8,Y(L.p)); x.lineTo(w-PR+10,Y(L.p)); x.stroke(); x.setLineDash([]);
+      x.fillStyle=L.c; x.font='700 14px Oxanium, sans-serif'; x.textAlign="left";
+      x.fillText(L.label,w-PR+16,Y(L.p)+5);
+    });
+    // trendlines
+    (g.tlines||[]).forEach(T=>{ if(this.k<T.from) return;
+      let x1=X(T.i1),y1=Y(T.p1),x2=X(T.i2),y2=Y(T.p2);
+      const dx=x2-x1,dy=y2-y1; x2+=dx*(T.ext||0); y2+=dy*(T.ext||0);
+      x.strokeStyle=T.c; x.lineWidth=3; x.setLineDash([9,6]);
+      x.beginPath(); x.moveTo(x1,y1); x.lineTo(x2,y2); x.stroke(); x.setLineDash([]);
+    });
+    // candles
+    const devI = (g.liar && this.k===g.liar.i && this.dev!==null) ? g.liar.i : -1;
+    for(let i=0;i<=this.k;i++){
+      let b=g.data[i];
+      if(i===devI){                                 // developing bar
+        const path=g.liar.path.slice(0,this.dev+1);
+        b=[path[0],Math.max(...path),Math.min(...path),path[path.length-1]];
+      }
+      x.globalAlpha = i===this.k?1:.94;
+      candle(x,X(i),Y,b,bw,b[3]>=b[0]?C.emerald:C.coral,i===this.k);
+      x.globalAlpha=1;
+    }
+    // developing-bar live price tag
+    if(devI>=0){
+      const p=g.liar.path[this.dev], above=p>100;
+      x.strokeStyle=above?C.coral:C.muted; x.lineWidth=1.6; x.setLineDash([4,4]);
+      x.beginPath(); x.moveTo(PL,Y(p)); x.lineTo(w-PR,Y(p)); x.stroke(); x.setLineDash([]);
+      x.fillStyle=above?C.coral:C.muted; x.font='700 12px "Space Mono", monospace';
+      x.textAlign="left"; x.fillText("LIVE "+p.toFixed(2),w-PR+14,Y(p)+4);
+      x.fillStyle=C.muted; x.font='11px "Space Mono", monospace';
+      x.fillText("bar still forming",X(devI)-26,PT+14);
+    }
+    // rings
+    (g.rings||[]).forEach(R=>{ if(this.k<R.i) return;
+      x.strokeStyle=R.c; x.lineWidth=3; x.globalAlpha=this.k===R.i?1:.5;
+      x.beginPath(); x.arc(X(R.i),Y(R.p),R.r||7,0,7); x.stroke(); x.globalAlpha=1; });
+    // right edge
+    x.strokeStyle=C.line2; x.lineWidth=1; x.setLineDash([3,5]);
+    x.beginPath(); x.moveTo(X(this.k)+step*.6,PT); x.lineTo(X(this.k)+step*.6,h-PB); x.stroke();
+    x.setLineDash([]);
+    if(this.k<n-1){ x.fillStyle="#42525f"; x.font='11px "Space Mono", monospace';
+      x.textAlign="left"; x.fillText("right edge",X(this.k)+step*.6+7,PT+13); }
+    // latest bubble
+    const ev=(g.ev||[]).filter(e=>e.i<=this.k && e.t).slice(-1)[0];
+    if(ev) bubble(x,X(ev.i),Y(ev.p),ev.tx*w,ev.ty*(h/560),ev.t,ev.c);
+  }
+}
+
+/* ---------------- tape configs ---------------- */
+const TAPES={
+ asc:{sym:"M2K · 2 MIN",title:"ASCENDING TRIANGLE",data:ASC,lo:91,hi:108.2,
+  levels:[{p:100,c:C.amber,label:"THE WALL",from:5}],
+  tlines:[{i1:8,p1:95,i2:19,p2:98.2,c:C.blue,from:19,ext:.95}],
+  rings:[{i:5,p:100,c:C.amber},{i:12,p:100,c:C.amber},{i:17,p:100,c:C.amber},
+    {i:8,p:95,c:C.blue},{i:14,p:96.9,c:C.blue},{i:19,p:98.2,c:C.blue},
+    {i:22,p:101.7,c:C.emerald,r:13}],
+  decide:{at:21,ans:"wait",
+    q:"Three touches at the wall, floor rising, price back at the ceiling. <em>What now?</em>",
+    opts:[{label:"Buy now — it's about to go",val:"buy"},
+          {label:"Wait for a close above the wall",val:"wait"},
+          {label:"Short the ceiling",val:"short"}],
+    why:"The setup is right but the verdict hasn't been delivered. Buying into the wall is buying a rumor — you're paying full price to find out whether the seller still has inventory. Wait for the close and let the market tell you."},
+  ev:[{i:5,p:100,tx:.24,ty:96,c:C.amber,tag:"TOUCH 1",
+      cap:"A seller is resting size at 100.0. Mark the price — that's the wall.",
+      t:["TOUCH 1 — the wall appears","Seller with real inventory at one price"]},
+    {i:12,p:100,tx:.4,ty:70,c:C.amber,tag:"TOUCH 2",
+      cap:"Second rejection at exactly the same price. One touch is chance; two is a line.",
+      t:["TOUCH 2 — same price","Now it's a line, not a coincidence"]},
+    {i:14,p:96.9,tx:.34,ty:480,c:C.blue,tag:"RISING FLOOR",
+      cap:"Each low is higher than the last. Buyers are paying up to reach the wall.",
+      t:["AND EACH LOW IS HIGHER","Pressure rising. Law 1."]},
+    {i:17,p:100,tx:.56,ty:56,c:C.amber,tag:"TOUCH 3",
+      cap:"Third touch. The seller's inventory is thinning with every one of these.",
+      t:["TOUCH 3 — inventory thinning","Now you wait, and only wait"]},
+    {i:22,p:101.7,tx:.7,ty:112,c:C.emerald,sound:"ok",tag:"ENTRY",
+      cap:"The close clears the wall. Verdict delivered. This is the trade.",
+      t:["ENTRY — the CLOSE clears it","A wick through would have been nothing"]},
+    {i:25,p:99.8,tx:.78,ty:470,c:C.coral,tag:"THROWBACK",
+      cap:"Price returns to kiss the broken wall — ~64% of the time. Your stop is nowhere near here.",
+      t:["THROWBACK — ~64% of the time","Broken ceiling is now the floor"]}]},
+
+ desc:{sym:"M2K · 2 MIN",title:"DESCENDING TRIANGLE",data:DESC,lo:91.5,hi:109.5,
+  levels:[{p:100,c:C.amber,label:"THE FLOOR",from:4}],
+  tlines:[{i1:7,p1:105,i2:17,p2:101.6,c:C.blue,from:17,ext:.85}],
+  rings:[{i:4,p:100,c:C.amber},{i:10,p:100,c:C.amber},{i:15,p:100,c:C.amber},
+    {i:18,p:100,c:C.amber},{i:7,p:105,c:C.blue},{i:12,p:103.1,c:C.blue},
+    {i:17,p:101.6,c:C.blue},{i:20,p:98.3,c:C.coral,r:13}],
+  decide:{at:19,ans:"wait",
+    q:"Fourth touch of the floor, highs stepping down, price pressed against it. <em>What now?</em>",
+    opts:[{label:"Short now — it's breaking",val:"sell"},
+          {label:"Wait for a close below the floor",val:"wait"},
+          {label:"Buy the support",val:"buy"}],
+    why:"Four touches means the buyer is nearly out of hands — but 'nearly' isn't a verdict. A floor that has held four times can hold a fifth. Wait for the body to close through it."},
+  ev:[{i:4,p:100,tx:.2,ty:490,c:C.amber,tag:"TOUCH 1",
+      cap:"A buyer is resting size at 100.0. Same auction as Section 01, upside down.",
+      t:["TOUCH 1 — a buyer holds here","Same wall, other side"]},
+    {i:12,p:103.1,tx:.4,ty:62,c:C.blue,tag:"LOWER HIGHS",
+      cap:"Each rally dies lower. Sellers accepting less to get out. Pressure falling.",
+      t:["EACH HIGH IS LOWER","Pressure falling. Law 1."]},
+    {i:18,p:100,tx:.58,ty:512,c:C.amber,tag:"TOUCH 4",
+      cap:"Fourth test. The buyer's inventory is nearly gone.",
+      t:["FOURTH TOUCH","Buyer running out of hands"]},
+    {i:20,p:98.3,tx:.68,ty:520,c:C.coral,sound:"ok",tag:"ENTRY",
+      cap:"Body closes below the floor. Verdict delivered. Short.",
+      t:["ENTRY — the CLOSE breaks it","Body below the line, not a wick"]},
+    {i:23,p:100.1,tx:.8,ty:76,c:C.blue,tag:"PULLBACK",
+      cap:"Old floor now acts as ceiling — ~57% of the time. Stop sits above the last lower high.",
+      t:["PULLBACK — ~57% of the time","Old floor is now the ceiling"]}]},
+
+ liar:{sym:"M2K · 2 MIN",title:"THE LIAR BAR",data:LIAR,lo:96.5,hi:103,
+  levels:[{p:100,c:C.amber,label:"THE WALL",from:3}],
+  rings:[{i:12,p:100.6,c:C.coral,r:13},{i:18,p:100.8,c:C.emerald,r:13}],
+  liar:{i:12,path:LIARPATH,pauseAt:5,
+    decide:{ans:"wait",
+      q:"Price is <em>100.6 — above the wall</em>. The bar has 40 seconds left to run. <em>What do you do?</em>",
+      opts:[{label:"Buy it — we're through",val:"buy"},
+            {label:"Wait for the bar to close",val:"wait"},
+            {label:"Buy half now, half on close",val:"half"}],
+      why:"Watch what the bar does next. Mid-bar price is a rumor with a timestamp — it has no more authority than a wick. Law 2 exists entirely for this moment, and 'buy half' is still buying the rumor with half your money."}},
+  ev:[{i:3,p:100,tx:.2,ty:80,c:C.amber,tag:"THE WALL",
+      cap:"Wall at 100.0. Ascending triangle building underneath it.",
+      t:["THE WALL — 100.0","Everything that follows is about this line"]},
+    {i:12,p:100.6,tx:.42,ty:70,c:C.coral,tag:"THE LIE",
+      cap:"The bar closed at 99.5 — back inside. The wall held. Nothing happened.",
+      t:["IT CLOSED BACK INSIDE","The wall held. Nothing happened."]},
+    {i:14,p:98.6,tx:.5,ty:500,c:C.coral,tag:"STOP HIT",
+      cap:"98.6. Anyone who bought that 100.6 wick is out at 99.5 — down 11 ticks.",
+      t:["THE WICK BUYER IS OUT","Bought 100.6, stopped 99.5 = −11 ticks"]},
+    {i:18,p:100.8,tx:.76,ty:80,c:C.emerald,sound:"ok",tag:"THE REAL ONE",
+      cap:"Six bars later: a body closes at 100.8. THIS is the verdict. This is the entry.",
+      t:["NOW it closes above","Six bars later. Same wall. Real break."]},
+    {i:21,p:102.2,tx:.86,ty:440,c:C.emerald,tag:"+14 TICKS",
+      cap:"The close-waiter is +14 and trailing. Same chart. One rule apart.",
+      t:["+14 TICKS AND RUNNING","25-tick spread from one sentence"]}],
+  onEnd:()=>{ const el=document.getElementById("liarsum");
+    if(el && el.style.display==="none"){ el.style.display="block"; breakSnd();
+      el.scrollIntoView({behavior:RM?"auto":"smooth",block:"nearest"}); } }},
+
+ ema:{sym:"M2K · 2 MIN",title:"20 EMA BOUNCE",data:EMAC,lo:89,hi:106.5,ema:EMAL,
+  rings:[{i:8,p:93.9,c:C.emerald,r:13},{i:15,p:97.7,c:C.emerald,r:13}],
+  decide:{at:7,ans:"wait",
+    q:"Price has pulled back and is sitting <em>right on the rising 20 EMA</em>. <em>Your move?</em>",
+    opts:[{label:"Buy the touch",val:"buy"},
+          {label:"Wait for a close back above it",val:"wait"},
+          {label:"It's rolling over — short",val:"short"}],
+    why:"The touch is location, not permission. Buying the touch means guessing the EMA will hold; waiting for the close means being told it did. Same trade, one bar later, with the risk of being wrong removed."},
+  ev:[{i:4,p:97.4,tx:.2,ty:70,c:C.blue,tag:"IMPULSE",
+      cap:"A real impulse leg first. No trend, no setup — Law 3.",
+      t:["IMPULSE FIRST","The slope is the edge"]},
+    {i:7,p:94.3,tx:.28,ty:470,c:C.amber,tag:"THE TOUCH",
+      cap:"Price comes back to the line. You didn't draw it — it came to you.",
+      t:["PRICE COMES TO THE LINE","Location, not permission"]},
+    {i:8,p:93.9,tx:.42,ty:520,c:C.emerald,sound:"ok",tag:"SIGNAL",
+      cap:"Wick under, close over, and it cleared the prior bar's high. All conditions met.",
+      t:["SIGNAL — wick under, close over","And it cleared the prior bar's high"]},
+    {i:15,p:97.7,tx:.72,ty:520,c:C.emerald,sound:"ok",tag:"SIGNAL 2",
+      cap:"Same test, higher up. Identical rule — no new judgment required.",
+      t:["SAME TEST, HIGHER UP","No new judgment needed"]},
+    {i:18,p:104.3,tx:.82,ty:62,c:C.amber,tag:"YOUR FLAG",
+      cap:"In a clean trend the flag's lower boundary IS this line. Same trade, two names.",
+      t:["THIS IS ALSO YOUR FLAG","Not a fifth pattern — a second lens"]}]}
+};
+document.querySelectorAll("[data-tape]").forEach(el=>{
+  el.__tape = new Tape(el, TAPES[el.dataset.tape]);
+});
+
+/* ============================ 01 · the auction ladder ============================ */
+const WALL={t:null,phase:0,mode:"wall"};
+const WALL_PHASES=[
+ {size:480,px:99.2,tag:"THE WALL",cap:"A seller is resting 480 contracts at 100.0. Every buyer who wants higher must go through him first."},
+ {size:480,px:100.0,tag:"TOUCH 1",cap:"First wave of buying arrives at the wall."},
+ {size:340,px:99.4,tag:"−140",cap:"140 contracts absorbed. Price rejects — but the wall is smaller now than it was."},
+ {size:340,px:100.0,tag:"TOUCH 2",cap:"Second wave. Buyers came from a higher low this time — that's your rising floor."},
+ {size:210,px:99.6,tag:"−130",cap:"210 left. The rejection is shallower. Each test costs the seller more than it costs the buyers."},
+ {size:210,px:100.0,tag:"TOUCH 3",cap:"Third wave. Same price, thinner defence."},
+ {size:90,px:99.9,tag:"−120",cap:"90 contracts. Barely a wall now. Price isn't even backing away."},
+ {size:0,px:100.0,tag:"EMPTY",cap:"Zero. The seller is done. There is nothing above this price to absorb anything."},
+ {size:0,px:101.4,tag:"VACUUM",cap:"The break isn't a prediction — it's a vacuum. Nothing was left to stop it."},
+ {size:0,px:100.1,tag:"THROWBACK",cap:"And now the flip: shorts trapped above cover here, new buyers defend it. The old ceiling is the floor. THAT is why your stop never lives on the line."}
+];
+const PEN_PHASES=[
+ {tag:"NO WALL",cap:"Pennant: converging lines, no flat side. Look at the ladder — resting size is scattered and small. Nothing is defended."},
+ {tag:"TRIGGER 100.4",cap:"Bar 1: the 'breakout price' is 100.4. Nobody is resting size there."},
+ {tag:"TRIGGER 100.2",cap:"Bar 2: the trigger moved to 100.2. The line converged. Your entry price changed by itself."},
+ {tag:"TRIGGER 100.1",cap:"Bar 3: now 100.1. You are chasing a number that moves every two minutes."},
+ {tag:"NOTHING TO EAT",cap:"No inventory to consume means no vacuum when it goes. That's the whole reason Bulkowski ranks it 36th of 39 — and why only 35% reach target."}
+];
+function drawWall(){
+  const cv=document.getElementById("wallc");
+  const {ctx:x,w,h}=fit(cv,Math.max(320,Math.min(400,cv.clientWidth*.46)));
+  x.clearRect(0,0,w,h); x.fillStyle=C.panel; x.fillRect(0,0,w,h);
+  const isW = WALL.mode==="wall";
+  const ph = isW?WALL_PHASES[WALL.phase]:PEN_PHASES[WALL.phase];
+  const lo=98.8, hi=101.8, PT=26, PB=28, plh=h-PT-PB;
+  const Y=p=>PT+plh-((p-lo)/(hi-lo))*plh;
+  const ladW=Math.min(320,w*.46), lx=18;
+  // ladder
+  x.fillStyle=C.muted; x.font='11px "Space Mono", monospace'; x.textAlign="left";
+  x.fillText("RESTING ORDERS",lx,PT-8);
+  const rows=[101.4,101.2,101.0,100.8,100.6,100.4,100.2,100.0,99.8,99.6,99.4,99.2,99.0];
+  const rh=plh/rows.length;
+  rows.forEach((p,i)=>{
+    const ry=PT+i*rh+1, isWall = isW && Math.abs(p-100)<.01;
+    let sz;
+    if(isW) sz = isWall ? ph.size : (p>100 ? 40+((i*37)%55) : 55+((i*29)%70));
+    else    sz = 30+((i*43)%60);                    // pennant: nothing meaningful anywhere
+    const maxSz = isW?480:110;
+    const bwid=(ladW-72)*(sz/maxSz);
+    x.fillStyle=isWall?(ph.size?C.amber:"#3a2a15"):"#1d2932";
+    rrect(x,lx+64,ry,Math.max(bwid,2),rh-3,2); x.fill();
+    x.fillStyle=isWall?C.amber:"#4d5c68"; x.font=(isWall?'700 ':'')+'11px "Space Mono", monospace';
+    x.textAlign="right"; x.fillText(p.toFixed(1),lx+56,ry+rh/2+4);
+    if(isWall){ x.textAlign="left"; x.fillStyle=ph.size?C.amber:C.coral;
+      x.fillText(ph.size?ph.size+" left":"EMPTY",lx+70+Math.max(bwid,2)+8,ry+rh/2+4); }
+  });
+  // price marker on ladder
+  if(isW){
+    const py=Y(ph.px);
+    x.strokeStyle=C.emerald; x.lineWidth=2.4;
+    x.beginPath(); x.moveTo(lx,py); x.lineTo(lx+ladW-8,py); x.stroke();
+    x.fillStyle=C.emerald; x.font='700 11px "Space Mono", monospace'; x.textAlign="left";
+    x.fillText("PRICE "+ph.px.toFixed(1),lx+ladW-4,py+4);
+  }
+  // right panel: schematic
+  const rx0=ladW+50, rw=w-rx0-20;
+  x.strokeStyle=C.amber; x.lineWidth=3; x.setLineDash([8,6]);
+  x.beginPath(); x.moveTo(rx0,Y(100)); x.lineTo(rx0+rw,Y(100)); x.stroke(); x.setLineDash([]);
+  x.fillStyle=C.amber; x.font='700 12px Oxanium, sans-serif'; x.textAlign="left";
+  x.fillText(isW?"THE WALL 100.0":"converging — no wall",rx0,Y(100)-10);
+  if(isW){
+    const pts=[[0,99.2],[1,100],[2,99.4],[3,100],[4,99.6],[5,100],[6,99.9],[7,100],
+               [8,101.4],[9,100.1]];
+    const n=WALL.phase+1, sw=rw/10;
+    x.strokeStyle=C.emerald; x.lineWidth=2.6; x.lineJoin="round"; x.beginPath();
+    pts.slice(0,n).forEach((p,i)=>{ const px=rx0+sw*(i+.5), py=Y(p[1]);
+      i?x.lineTo(px,py):x.moveTo(px,py); });
+    x.stroke();
+    pts.slice(0,n).forEach((p,i)=>{ x.fillStyle=p[1]>=100?C.emerald:C.coral;
+      x.beginPath(); x.arc(rx0+sw*(i+.5),Y(p[1]),4,0,7); x.fill(); });
+  } else {
+    // converging pennant with a moving trigger
+    const n=WALL.phase, sw=rw/6;
+    x.strokeStyle=C.blue; x.lineWidth=2.4;
+    x.beginPath(); x.moveTo(rx0,Y(101.5)); x.lineTo(rx0+rw,Y(100.15)); x.stroke();
+    x.beginPath(); x.moveTo(rx0,Y(98.9)); x.lineTo(rx0+rw,Y(100.05)); x.stroke();
+    const trig=[100.4,100.2,100.1];
+    for(let i=0;i<Math.min(n,3);i++){
+      const px=rx0+sw*(i+1.4), py=Y(trig[i]);
+      x.strokeStyle=C.coral; x.lineWidth=2; x.setLineDash([4,4]);
+      x.beginPath(); x.moveTo(px-26,py); x.lineTo(px+26,py); x.stroke(); x.setLineDash([]);
+      x.fillStyle=C.coral; x.font='10.5px "Space Mono", monospace'; x.textAlign="center";
+      x.fillText(trig[i].toFixed(1),px,py-7);
+    }
+  }
+  // caption
+  document.querySelector("#wallcap b").textContent=ph.tag;
+  document.getElementById("wallcap").lastChild.nodeValue=" "+ph.cap;
+}
+function runWall(mode){
+  clearInterval(WALL.t); WALL.mode=mode; WALL.phase=0; drawWall();
+  const total=(mode==="wall"?WALL_PHASES:PEN_PHASES).length;
+  WALL.t=setInterval(()=>{
+    if(WALL.phase>=total-1){ clearInterval(WALL.t); return; }
+    WALL.phase++;
+    if(mode==="wall"){ WALL.phase===8?breakSnd():eatSound(); } else tickSound();
+    drawWall();
+  }, RM?1:1450);
+}
+document.getElementById("wallrun").onclick=()=>runWall("wall");
+document.getElementById("penrun").onclick =()=>runWall("pennant");
+drawWall(); addEventListener("resize",drawWall);
+
+/* ============================ 02 · direction drill ============================ */
+const D1={streak:0,best:0,cur:null,locked:false};
+function drawShape(kind){
+  const cv=document.getElementById("d1c");
+  const {ctx:x,w,h}=fit(cv,Math.max(200,Math.min(280,cv.clientWidth*.32)));
+  x.clearRect(0,0,w,h); x.fillStyle=C.panel; x.fillRect(0,0,w,h);
+  const PL=40,PR=40,PT=32,PB=36, pw=w-PL-PR, ph=h-PT-PB;
+  const asc = kind==="asc", flatY = asc?PT+12:PT+ph-12;
+  x.strokeStyle=C.amber; x.lineWidth=4; x.setLineDash([10,7]);
+  x.beginPath(); x.moveTo(PL,flatY); x.lineTo(PL+pw,flatY); x.stroke(); x.setLineDash([]);
+  x.strokeStyle=C.blue; x.lineWidth=4; x.beginPath();
+  if(asc){ x.moveTo(PL,PT+ph); x.lineTo(PL+pw*.94,PT+26); }
+  else   { x.moveTo(PL,PT);    x.lineTo(PL+pw*.94,PT+ph-26); }
+  x.stroke();
+  x.strokeStyle=C.text; x.lineWidth=2.4; x.globalAlpha=.72; x.beginPath();
+  for(let s=0;s<8;s++){
+    const t=s/7, px=PL+pw*.92*t;
+    const py = (s%2) ? (asc?flatY+8:flatY-8)
+                     : (asc? PT+ph-10-(ph*.62)*t : PT+10+(ph*.62)*t);
+    s?x.lineTo(px,py):x.moveTo(px,py);
+  }
+  x.stroke(); x.globalAlpha=1;
+  x.font='700 12px "Space Mono", monospace'; x.textAlign="left";
+  x.fillStyle=C.amber; x.fillText(asc?"FLAT CEILING":"FLAT FLOOR",PL+4,asc?flatY-11:flatY+21);
+  x.fillStyle=C.blue;  x.fillText(asc?"RISING FLOOR":"FALLING CEILING",PL+4,asc?PT+ph+24:PT-12);
+}
+function nextD1(){ D1.cur=Math.random()<.5?"asc":"desc"; D1.locked=false;
+  drawShape(D1.cur); document.getElementById("d1v").className="verdict"; }
+document.querySelectorAll("[data-d1]").forEach(b=>b.onclick=()=>{
+  if(D1.locked) return; D1.locked=true;
+  const want=D1.cur==="asc"?"long":"short", right=b.dataset.d1===want;
+  const v=document.getElementById("d1v");
+  v.className="verdict show "+(right?"ok":"no");
+  v.innerHTML = right
+    ? "<b>Correct.</b><span>"+(D1.cur==="asc"
+      ? "Flat ceiling, rising pressure underneath. The seller runs out. It breaks up."
+      : "Flat floor, falling pressure on top. The buyer runs out. It breaks down.")+"</span>"
+    : "<b>No — the other way.</b><span>"+(D1.cur==="asc"
+      ? "The flat line is on TOP. A seller is stuck at one price while buyers pay more and more to reach him. Ascending. LONG."
+      : "The flat line is on the BOTTOM. A buyer is stuck at one price while sellers accept less and less. Descending. SHORT.")+"</span>";
+  right?okSound():noSound();
+  D1.streak = right?D1.streak+1:0;
+  if(D1.streak>D1.best){ D1.best=D1.streak; Store.set("re2.best",D1.best); }
+  document.getElementById("d1streak").textContent=D1.streak;
+  document.getElementById("d1best").textContent=D1.best;
+  setTimeout(nextD1, right?900:2700);
+});
+nextD1(); addEventListener("resize",()=>{ if(D1.cur) drawShape(D1.cur); });
+
+/* ============================ 07 · close test ============================ */
+const CT={ema:94.0, prevHigh:95.6, o:93.6, lo:92.4, c:96.0};
+function drawCT(){
+  const cv=document.getElementById("ctc");
+  const {ctx:x,w,h}=fit(cv,Math.max(300,Math.min(380,cv.clientWidth*.72)));
+  const lo=91.4, hi=98.6, PT=26, PB=30, ph=h-PT-PB;
+  const Y=p=>PT+ph-((p-lo)/(hi-lo))*ph;
+  x.clearRect(0,0,w,h); x.fillStyle=C.panel; x.fillRect(0,0,w,h);
+  const cx=w*.62, bw=Math.min(78,w*.19);
+  const top=Math.max(CT.c,CT.o), bot=Math.min(CT.c,CT.o);
+  const wickHi=Math.max(top+.55, CT.c+.35);
+  const px=w*.31, pbw=bw*.85;
+  x.strokeStyle=C.emerald; x.lineWidth=2; x.globalAlpha=.42;
+  x.beginPath(); x.moveTo(px,Y(CT.prevHigh)); x.lineTo(px,Y(93.4)); x.stroke();
+  x.fillStyle=C.emerald; rrect(x,px-pbw/2,Y(95.2),pbw,Y(93.9)-Y(95.2),3); x.fill();
+  x.globalAlpha=1;
+  x.strokeStyle=C.blue; x.lineWidth=2; x.setLineDash([6,5]);
+  x.beginPath(); x.moveTo(26,Y(CT.prevHigh)); x.lineTo(w-26,Y(CT.prevHigh)); x.stroke();
+  x.setLineDash([]);
+  x.fillStyle=C.blue; x.font='700 12px "Space Mono", monospace'; x.textAlign="left";
+  x.fillText("prior bar high",30,Y(CT.prevHigh)-8);
+  x.strokeStyle=C.amber; x.lineWidth=4;
+  x.beginPath(); x.moveTo(20,Y(CT.ema)+6); x.lineTo(w-20,Y(CT.ema)-6); x.stroke();
+  x.fillStyle=C.amber; x.textAlign="right"; x.fillText("20 EMA",w-26,Y(CT.ema)+26);
+  const col=CT.c>=CT.o?C.emerald:C.coral;
+  x.strokeStyle=col; x.lineWidth=2.6;
+  x.beginPath(); x.moveTo(cx,Y(wickHi)); x.lineTo(cx,Y(CT.lo)); x.stroke();
+  x.fillStyle=col; rrect(x,cx-bw/2,Y(top),bw,Math.max(Y(bot)-Y(top),3),3); x.fill();
+  const rTop=Y(wickHi), rBot=Y(CT.lo), third=rTop+(rBot-rTop)/3;
+  x.strokeStyle=C.muted; x.globalAlpha=.4; x.lineWidth=1.4; x.setLineDash([4,4]);
+  x.beginPath(); x.moveTo(cx-bw*.9,third); x.lineTo(cx+bw*.9,third); x.stroke();
+  x.setLineDash([]); x.globalAlpha=1;
+  x.fillStyle=C.muted; x.font='10.5px "Space Mono", monospace'; x.textAlign="left";
+  x.fillText("upper ⅓",cx+bw*.95,third+4);
+  x.strokeStyle=C.text; x.lineWidth=2.6;
+  x.beginPath(); x.moveTo(cx-bw*.78,Y(CT.c)); x.lineTo(cx+bw*.78,Y(CT.c)); x.stroke();
+  return {wickHi};
+}
+function evalCT(){
+  const g=drawCT();
+  const p1=CT.lo<=CT.ema, p2=CT.c>CT.ema, p3=CT.c>CT.prevHigh;
+  const rng=g.wickHi-CT.lo, p4=(CT.c-CT.lo)>=rng*(2/3);
+  [["c1",p1],["c2",p2],["c3",p3],["c4",p4]].forEach(([id,ok])=>{
+    const el=document.getElementById(id);
+    el.className="chk "+(ok?"pass":"fail");
+    el.querySelector(".dot").textContent=ok?"✓":"✕";
+  });
+  const all=p1&&p2&&p3&&p4, f=document.getElementById("ctfinal");
+  f.className="final "+(all?"go":"stop");
+  f.textContent=all?"TAKE THE TRADE":"STAND DOWN";
+  document.getElementById("ctlab").textContent=
+    (CT.c>CT.ema?"+":"")+(CT.c-CT.ema).toFixed(2)+" · "+tk(CT.c-CT.ema)+"t";
+}
+document.getElementById("ctclose").oninput=e=>{ CT.c=92.6+(+e.target.value/100)*4.6; evalCT(); };
+evalCT(); addEventListener("resize",evalCT);
+
+/* ============================ 08 · time machine ============================ */
+const DAY=390;
+function setTM(tf){
+  const per=+tf, m={9:9*per,20:20*per,200:200*per};
+  const cap=v=>Math.min(100,(v/DAY)*100);
+  document.getElementById("f9").style.width=cap(m[9])+"%";
+  document.getElementById("f20").style.width=cap(m[20])+"%";
+  document.getElementById("f200").style.width=cap(m[200])+"%";
+  const fmt=v=>v>=60?(v/60).toFixed(1).replace(/\.0$/,"")+" hrs":v+" min";
+  document.getElementById("l9").textContent=fmt(m[9]);
+  document.getElementById("l20").textContent=fmt(m[20]);
+  document.getElementById("l200").textContent=fmt(m[200])+
+    (m[200]>DAY?"  ⟶ longer than the whole day":"");
+  document.getElementById("ov").style.display=m[200]>DAY?"block":"none";
+}
+document.querySelectorAll("[data-tf]").forEach(b=>b.onclick=()=>{
+  document.querySelectorAll("[data-tf]").forEach(o=>o.classList.remove("on"));
+  b.classList.add("on"); setTM(b.dataset.tf); tickSound();
+});
+setTM(2);
+
+/* ============================ 09 · tightness grader ============================ */
+function drawTG(depth){
+  const cv=document.getElementById("tgc");
+  const {ctx:x,w,h}=fit(cv,Math.max(300,Math.min(380,cv.clientWidth*.5)));
+  const lo=94,hi=107, PL=30,PR=30,PT=26,PB=30, pw=w-PL-PR, ph=h-PT-PB;
+  const Y=p=>PT+ph-((p-lo)/(hi-lo))*ph;
+  x.clearRect(0,0,w,h); x.fillStyle=C.panel; x.fillRect(0,0,w,h);
+  const PRE=4,POLE=6,PULL=6,POST=5, n=PRE+POLE+PULL+POST;
+  const step=pw/n, bw=Math.min(step*.6,17), X=i=>PL+step*(i+.5);
+  const poleTop=104, base=96, d=0.6+depth*6.5, bars=[];
+  for(let i=0;i<n;i++){
+    let p;
+    if(i<PRE) p=base-0.5+i*0.30;
+    else if(i<PRE+POLE){ const t=(i-PRE+1)/POLE; p=base+(poleTop-base)*t; }
+    else if(i<PRE+POLE+PULL){ const t=(i-PRE-POLE+1)/PULL; p=poleTop-d*t; }
+    else { const t=(i-PRE-POLE-PULL+1)/POST; p=(poleTop-d)+(d+2.6)*t; }
+    const o=i?bars[i-1][3]:base-0.9;
+    bars.push([o,Math.max(o,p)+.35,Math.min(o,p)-.35,p]);
+  }
+  const ema=a=>{let v=bars[0][3];return bars.map(b=>v=v+a*(b[3]-v));};
+  const E9=ema(0.16), E20=ema(0.07), PS=PRE+POLE, PE=PRE+POLE+PULL;
+  [[E9,C.blue,"9 EMA",-9],[E20,C.amber,"20 EMA",21]].forEach(([arr,col,lab,off])=>{
+    x.strokeStyle=col; x.lineWidth=3; x.lineJoin="round"; x.beginPath();
+    arr.forEach((v,i)=>i?x.lineTo(X(i),Y(v)):x.moveTo(X(i),Y(v))); x.stroke();
+    x.fillStyle=col; x.font='700 11.5px "Space Mono", monospace'; x.textAlign="left";
+    x.fillText(lab,X(0)+2,Y(arr[0])+off);
+  });
+  bars.forEach((b,i)=>candle(x,X(i),Y,b,bw,b[3]>=b[0]?C.emerald:C.coral,false));
+  let b9=false,b20=false;
+  for(let i=PS;i<PE;i++){ if(bars[i][3]<E9[i])b9=true; if(bars[i][3]<E20[i])b20=true; }
+  const grade=b20?"NO":(b9?"B":"A");
+  x.fillStyle=grade==="A"?"rgba(63,191,143,.09)":grade==="B"?"rgba(240,168,60,.09)":"rgba(239,107,94,.09)";
+  x.fillRect(X(PS)-step/2,PT,step*PULL,ph);
+  x.fillStyle=C.muted; x.font='11px "Space Mono", monospace'; x.textAlign="center";
+  x.fillText("the pullback",X(PS+PULL/2-.5),PT+14);
+  return grade;
+}
+const GR={
+ A:["good","Grade A · full size",
+    "The pullback never <b>closes</b> below the 9. Buyers aren't giving back even eighteen minutes of ground. This is the tight flag the statistics were built on."],
+ B:["","Grade B · half size",
+    "It closes below the 9 but holds the 20. Still a flag, just looser. Take it at reduced size and don't argue with the smaller position when it works."],
+ NO:["bad","No trade · it isn't a flag anymore",
+    "Once the pullback closes below the 20, most of the flagpole is gone and the structure has failed. And if it drifts sideways instead of falling — past 15 bars — stop calling it a flag. It has become a <b>rectangle</b>, with better odds and different rules."]
+};
+function updTG(){
+  const v=+document.getElementById("tgdepth").value/100, g=drawTG(v);
+  const col=g==="A"?C.emerald:g==="B"?C.amber:C.coral;
+  document.getElementById("grlab").innerHTML='GRADE <b style="color:'+col+'">'+(g==="NO"?"—":g)+'</b>';
+  document.getElementById("tglab").textContent=v<.34?"shallow":v<.68?"medium":"deep";
+  const [cls,title,body]=GR[g], card=document.getElementById("grcard");
+  card.className="rules "+cls; card.innerHTML="<h3>"+title+"</h3><p>"+body+"</p>";
+}
+document.getElementById("tgdepth").oninput=updTG;
+updTG(); addEventListener("resize",updTG);
+
+/* ============================ 10 · the exam ============================ */
+const QS=[
+ {q:"Flat line across the TOP, each low higher than the last. Which way do you trade it?",
+  o:["Long","Short","Either — wait for the break to tell you"],a:0,
+  w:"Ascending triangle. A seller is stuck at one price while buyers pay more and more to reach him. He runs out first. <b>Long.</b>"},
+ {q:"Price wicks three ticks above the wall, then closes back inside the pattern. Your action?",
+  o:["Enter — the level broke","Nothing at all","Enter half size"],a:1,
+  w:"<b>Law 2.</b> A wick is a rumor. The bar closed back inside, which means the wall held and nothing happened. Half size is still trading a rumor with half your money."},
+ {q:"You're long an ascending-triangle break. Where does the stop go?",
+  o:["At the breakout line","Below the last rising low","Ten ticks under entry"],a:1,
+  w:"About 64% of these throw back to kiss the broken wall. A stop on the line gets taken out by <i>healthy</i> behaviour. Anchor it to structure — the last rising low."},
+ {q:"Why does price so often return to the broken level afterwards?",
+  o:["Random noise","Shorts trapped above cover there and new buyers defend it — the ceiling flips to floor","Algorithms hunting stops"],a:1,
+  w:"The wall doesn't vanish when it breaks; it changes sides. Everyone who sold it is now trapped and covers on the retest. That flip is why the throwback is the rule, not the exception."},
+ {q:"The 20 EMA is dead flat and price is crossing it in both directions. The setup is:",
+  o:["A bounce — take the touch","No setup at all","A reversal — fade it"],a:1,
+  w:"<b>Law 3.</b> Every one of those crosses looks like a bounce and none of them is. The slope was always the edge — never the touch."},
+ {q:"On a 2-minute chart, roughly how much time is held in the 200 EMA?",
+  o:["About 40 minutes","About 6 hours 40 minutes — longer than the whole session","About 2 hours"],a:1,
+  w:"200 × 2 minutes = 400 minutes. RTH is 390. That line is dragging overnight price into your entry chart, which is exactly why it's a gate and never a trampoline."},
+ {q:"A flag pullback closes below the 9 EMA but holds above the 20. Your grade and size?",
+  o:["Grade A, full size","Grade B, half size","No trade"],a:1,
+  w:"9 grades · 20 confirms · 200 gates. Below the 9 but holding the 20 is a looser flag that still works — take it smaller."},
+ {q:"Your flag has now drifted sideways for 20 bars. What are you looking at?",
+  o:["Still a flag, just a patient one","A rectangle — box rules now apply","A failed setup, delete it"],a:1,
+  w:"Past ~15 bars it is reclassified. Rectangles have their own and rather better statistics: wait for the close beyond the edge and target the box height."},
+ {q:"Why does the pennant rate so poorly (36th of 39, only ~35% reaching target)?",
+  o:["It's too small to trade","Neither line is flat, so no price is defended and the trigger moves every bar","It only forms in downtrends"],a:1,
+  w:"No wall means no inventory to consume, so there's no vacuum when it 'breaks'. And because both lines converge, the entry price you were watching changes by itself every two minutes."},
+ {q:"Which close-test condition scales itself across instruments and market speeds?",
+  o:["Close is above the EMA","Close clears the prior candle's high","Close is 4+ ticks above the EMA"],a:1,
+  w:"A fixed tick threshold is too tight on wide days and too loose on quiet ones. 'Clears the prior bar's high' means the same thing on M2K and MES, in July and October, with nothing to re-tune."},
+ {q:"Price touches the 200 EMA on your 5-minute chart. What has it told you?",
+  o:["A high-probability bounce is setting up","Stand down — price travelled a whole session's worth back, so the trend is gone","Nothing useful"],a:1,
+  w:"You cannot have both setups at once. If price has come all the way back to the 200, the trend that powered the 20 EMA bounce has already ended."},
+ {q:"Where in a triangle should you take the break?",
+  o:["Right at the apex tip","50–75% of the way to the apex","As early as possible — the first touch"],a:1,
+  w:"At the tip the pattern has run out of room and the move is exhausted before it starts. The meat is in the middle third."}
+];
+let exi=0, exScore=0, exHist=[];
+function renderExam(){
+  const host=document.getElementById("exam");
+  if(exi>=QS.length){
+    const pct=Math.round(exScore/QS.length*100);
+    Store.get("re2.exam",[]).then(prev=>{
+      const runs=[...prev,{n:exScore,of:QS.length,d:Date.now()}].slice(-6);
+      Store.set("re2.exam",runs);
+      host.innerHTML=`<p class="exq">${exScore} / ${QS.length} &nbsp;·&nbsp; ${pct}%</p>
+        <p style="color:var(--muted);margin:0 0 16px">${
+          pct>=92?"That's mastery. Come back in a week and run it cold — the second pass is the one that makes it permanent."
+         :pct>=75?"Solid. Re-read the sections behind the misses, then run it again tomorrow rather than right now — spacing is what moves it into long-term memory."
+         :"Worth another pass through the tapes before you re-run this. Not a failure — a map of exactly which mechanism hasn't clicked yet."}</p>
+        <ul class="hist">${runs.slice().reverse().map(r=>
+          `<li>· <b>${r.n}/${r.of}</b> — ${new Date(r.d).toLocaleDateString()}</li>`).join("")}</ul>
+        <button class="btn pri" id="exagain" style="margin-top:16px">Run it again</button>`;
+      document.getElementById("exagain").onclick=()=>{exi=0;exScore=0;renderExam();};
+    });
+    return;
+  }
+  const Q=QS[exi];
+  host.innerHTML=`
+    <div class="drillhead"><span>QUESTION ${exi+1} / ${QS.length}</span>
+      <span>Score <b>${exScore}</b></span></div>
+    <p class="exq">${Q.q}</p>
+    <div class="exopts">${Q.o.map((t,i)=>`<button class="btn" data-x="${i}">${t}</button>`).join("")}</div>
+    <div class="exwhy"></div>`;
+  host.querySelectorAll("[data-x]").forEach(b=>b.onclick=()=>{
+    const pick=+b.dataset.x, right=pick===Q.a;
+    host.querySelectorAll("[data-x]").forEach((o,i)=>{
+      o.disabled=true;
+      if(i===Q.a) o.classList.add("right");
+      else if(i===pick) o.classList.add("wrong");
+    });
+    if(right) exScore++;
+    const why=host.querySelector(".exwhy");
+    why.className="exwhy show"; why.innerHTML=Q.w;
+    right?okSound():noSound();
+    setTimeout(()=>{ exi++; renderExam(); }, right?1500:3600);
+  });
+}
+renderExam();
+
+/* ============================ nav ============================ */
+const SECS=[["s1","01 The Wall"],["s2","02 Direction"],["s3","03 Ascending"],
+  ["s4","04 Descending"],["s5","05 Liar Bar"],["s6","06 EMA Bounce"],["s7","07 Close Test"],
+  ["s8","08 The 200"],["s9","09 Tightness"],["s10","10 Exam"],["s11","11 Nine Lines"]];
+document.getElementById("nav").innerHTML=SECS.map(([id,t])=>
+  `<a href="#${id}" data-s="${id}">${t}</a>`).join("");
+const links=[...document.querySelectorAll("nav a")];
+let CUR="s1";
+const io=new IntersectionObserver(es=>{
+  es.forEach(e=>{ if(e.isIntersecting){
+    links.forEach(l=>l.classList.toggle("on",l.dataset.s===e.target.id));
+    CUR=e.target.id; }});
+},{rootMargin:"-45% 0px -50% 0px"});
+SECS.forEach(([id])=>io.observe(document.getElementById(id)));
+
+/* ============================ narrator ============================ */
+const SPEECH={
+ s1:"A triangle is not geometry. It is an auction with a seller parked at one price, holding real inventory. Every touch of that flat line eats some of it. When the inventory reaches zero there is nothing left to absorb the buying, and the break is not a prediction. It is a vacuum. Run the pennant afterwards and look at the ladder. No resting size anywhere. Nothing to eat, nothing to break. That is why it ranks thirty sixth out of thirty nine.",
+ s2:"The flat line is the wall. The sloping line is the pressure. Pressure rising into a flat ceiling breaks upward, so you go long. Pressure falling onto a flat floor breaks downward, so you go short. Ten in a row and you never think about it again.",
+ s3:"Ascending triangle. A seller is parked at one fixed price while buyers keep paying more to reach him. Draw only the flat line. Enter when a two minute candle closes above it. Put the stop below the last rising low, never at the wall, because roughly two times in three price comes back and kisses that line first.",
+ s4:"Descending triangle. The mirror. A buyer holds the floor and sellers grind him down. Enter on a two minute close below the floor. Stop above the last lower high. And this pattern is far stronger inside a downtrend than inside an uptrend.",
+ s5:"The Liar Bar. This tape contains one bar that lies to you while it is still forming. Mid bar, price is above the wall. The app will stop right there and ask what you do. Then it shows you both futures. The trader who believed the rumor loses eleven ticks. The trader who waited for the close makes fourteen. A twenty five tick spread produced by one sentence. No close, no trade.",
+ s6:"The twenty E M A bounce. Here the wall comes to price. The line is a moving shelf of the last forty minutes of consensus, and in a healthy trend this is often the very same trade as your flag, because the flag's lower boundary sits right on it. Not a fifth pattern. A second way of seeing the one you already trade.",
+ s7:"How far above the E M A must the close be? Wrong question, and now you know why. Distance to a moving line is a rumor too, because the line moves again next bar. Measure the candle instead. The low must touch the E M A, the close must be above it, the close must clear the prior candle's high, and the close must sit in the upper third of its own range.",
+ s8:"Arithmetic, not statistics. On a two minute chart the two hundred E M A holds six hours and forty minutes of price. The entire trading day is six and a half hours. That line is dragging overnight price into your entry chart. You cannot have both setups at once. If price travelled all the way back to the two hundred, the trend that powered the twenty E M A bounce is already gone. The two hundred is a gate, not a trampoline.",
+ s9:"A new job for the nine E M A. As an entry gate it is nearly redundant, because gates that agree with each other do not filter. But tightness is worth about thirty percentage points while any moving average filter is worth five to ten. Nine grades, twenty confirms, two hundred gates. Never closes below the nine is grade A, full size. Below the nine but holding the twenty is grade B, half size. Below the twenty and it is not a flag anymore.",
+ s10:"Twelve questions, interleaved on purpose. Mixed retrieval is what moves knowledge from understood tonight to known in October. Your scores are saved, so run this again in a week. The second attempt is the one that makes it permanent.",
+ s11:"Nine lines. The flat line is the wall and the sloping line is the pressure. Only the wall triggers. Break at fifty to seventy five percent toward the apex. No close, no trade. Stops live at the last swing, never at the wall. The slope is the edge. Nine grades, twenty confirms, two hundred gates. Fifteen sideways bars and it is a rectangle now. And every number here grew on daily stock charts, so log pattern and time window in your journal until the only table that is truly yours exists."
+};
+const synth=window.speechSynthesis;
+let VOICES=[], reading=false;
+function loadVoices(){
+  VOICES=(synth?synth.getVoices():[]).filter(v=>/^en/i.test(v.lang));
+  const sel=document.getElementById("nvoice");
+  if(!VOICES.length){ sel.innerHTML="<option>default</option>"; return; }
+  const pref=VOICES.find(v=>/ava|samantha|natural|aria|jenny/i.test(v.name))||VOICES[0];
+  sel.innerHTML=VOICES.map((v,i)=>
+    `<option value="${i}"${v===pref?" selected":""}>${v.name.slice(0,22)}</option>`).join("");
+}
+if(synth){ loadVoices(); synth.onvoiceschanged=loadVoices; }
+document.getElementById("nplay").onclick=function(){
+  if(!synth){ this.textContent="—"; return; }
+  if(reading){ synth.cancel(); reading=false; this.textContent="▶"; this.classList.remove("on"); return; }
+  const u=new SpeechSynthesisUtterance(SPEECH[CUR]||SPEECH.s1);
+  const i=+document.getElementById("nvoice").value;
+  if(VOICES[i]) u.voice=VOICES[i];
+  u.rate=.96;
+  u.onend=()=>{ reading=false; const b=document.getElementById("nplay");
+    b.textContent="▶"; b.classList.remove("on"); };
+  synth.cancel(); synth.speak(u); reading=true;
+  this.textContent="■"; this.classList.add("on");
+};
+document.getElementById("nsound").onclick=function(){
+  SND=!SND; this.classList.toggle("on",SND);
+  this.setAttribute("aria-label",SND?"Mute sound effects":"Unmute sound effects");
+  if(SND) tickSound();
+};
+addEventListener("beforeunload",()=>{ if(synth) synth.cancel(); });
+
+/* ============================ boot ============================ */
+(async ()=>{
+  D1.best = await Store.get("re2.best",0) || 0;
+  document.getElementById("d1best").textContent=D1.best;
+  document.getElementById("savehint").textContent = Store.kind==="cloud"
+    ? "Streak and exam scores persist between sessions."
+    : "Streak and exam scores are held for this session only.";
+})();
+
+</script>
+</body>
+</html>
