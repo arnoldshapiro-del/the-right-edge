@@ -220,8 +220,78 @@ footer b{color:var(--text)}
   margin-right:7px;vertical-align:middle}
 .savehint{font-family:var(--mono);font-size:11.5px;color:var(--muted);letter-spacing:.06em}
 </style>
+
+<!-- ===== PRIVATE ACCESS GATE — Google Sign-In, Arnie only (added 2026-08-01) ===== -->
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+<script>
+  var firebaseConfig = {
+    "apiKey": "AIzaSyBWKpWwPRFqjSxCmxSBpqZjLenlL7B7REU",
+    "authDomain": "shapiro-apps.firebaseapp.com",
+    "projectId": "shapiro-apps",
+    "storageBucket": "shapiro-apps.firebasestorage.app",
+    "messagingSenderId": "33734446646",
+    "appId": "1:33734446646:web:1d7df4012cf441b1c45297"
+  };
+  firebase.initializeApp(firebaseConfig);
+  var fbAuth = firebase.auth();
+  var fbProvider = new firebase.auth.GoogleAuthProvider();
+  var FB_ALLOWED_EMAIL = 'arnold.shapiro@gmail.com';
+
+  function fbSignIn() {
+    var err = document.getElementById('fb-error');
+    if (err) err.style.display = 'none';
+    fbAuth.signInWithPopup(fbProvider).catch(function (e) {
+      if (err) {
+        err.textContent = 'Sign-in failed: ' + ((e && e.code) ? e.code : e);
+        err.style.display = 'block';
+      }
+    });
+  }
+  function fbSignOut() { fbAuth.signOut(); location.reload(); }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    fbAuth.onAuthStateChanged(function (user) {
+      var gate = document.getElementById('fb-gate');
+      var denied = document.getElementById('fb-denied');
+      if (user) {
+        if (user.email !== FB_ALLOWED_EMAIL) {
+          fbAuth.signOut();
+          if (denied) denied.style.display = 'block';
+          return;
+        }
+        document.body.classList.remove('fb-locked');
+        if (gate) gate.style.display = 'none';
+      } else {
+        document.body.classList.add('fb-locked');
+        if (gate) gate.style.display = 'flex';
+        if (denied) denied.style.display = 'none';
+      }
+    });
+  });
+</script>
+<style>
+  body.fb-locked > *:not(#fb-gate):not(script):not(style):not(link){display:none!important}
+  #fb-gate{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;background:#070c18;font-family:Oxanium,Inter,system-ui,sans-serif;text-align:center;padding:24px}
+  #fb-gate .fb-icon{font-size:48px;margin-bottom:16px}
+  #fb-gate .fb-title{color:#e2e8f0;font-size:22px;font-weight:700;margin-bottom:8px;letter-spacing:.5px}
+  #fb-gate .fb-sub{color:#94a3b8;font-size:14px;margin-bottom:28px;line-height:1.6}
+  #fb-gate .fb-btn{background:#14b8a6;color:#070c18;border:none;border-radius:10px;padding:13px 30px;font-size:15px;font-weight:700;cursor:pointer;letter-spacing:.3px;transition:background .2s;font-family:inherit}
+  #fb-gate .fb-btn:hover{background:#2dd4bf}
+  #fb-gate .fb-msg{display:none;color:#fca5a5;font-size:13px;margin-top:18px;max-width:420px;line-height:1.5}
+</style>
+<!-- ===== end private access gate ===== -->
 </head>
-<body>
+<body class="fb-locked">
+<div id="fb-gate">
+  <div class="fb-icon">&#128274;</div>
+  <div class="fb-title">Private &mdash; Arnie only</div>
+  <div class="fb-sub">This app is not public.<br>Sign in with your Google account to continue.</div>
+  <button class="fb-btn" onclick="fbSignIn()">Sign in with Google</button>
+  <div class="fb-msg" id="fb-denied">That account is not authorized. Only Arnie&rsquo;s Google account can open this app.</div>
+  <div class="fb-msg" id="fb-error"></div>
+</div>
+
 
 <div class="wrap">
 <header>
