@@ -9,7 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@400;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#080c10; --panel:#10171e; --panel2:#16202a; --line:#1e2c37; --line2:#2a3b48;
+  --bg:#080c10; --panel:#10171e; --panel2:#16202a; --line:#1e2c37; --line2:#5e6b75;
   --amber:#f0a83c; --emerald:#3fbf8f; --coral:#ef6b5e; --blue:#5fa8d3;
   --text:#dfe7ec; --muted:#78899a;
   --mono:'Space Mono',ui-monospace,monospace; --ui:'Oxanium',system-ui,sans-serif;
@@ -35,8 +35,9 @@ h1{font-size:clamp(32px,6.6vw,60px);font-weight:800;letter-spacing:-.025em;margi
 .law:nth-child(3){animation-delay:.5s;border-top-color:var(--blue)}
 @keyframes lawin{to{opacity:1;transform:none}}
 @media(prefers-reduced-motion:reduce){.law{animation:none;opacity:1;transform:none}}
-.law h3{font-family:var(--mono);font-size:11px;letter-spacing:.2em;margin:0 0 8px;color:var(--amber)}
-.law:nth-child(2) h3{color:var(--emerald)} .law:nth-child(3) h3{color:var(--blue)}
+.law h2{font-family:var(--mono);font-size:11px;font-weight:700;line-height:normal;
+  letter-spacing:.2em;margin:0 0 8px;color:var(--amber)}
+.law:nth-child(2) h2{color:var(--emerald)} .law:nth-child(3) h2{color:var(--blue)}
 .law p{margin:0;font-size:15.5px;line-height:1.5}
 .law b{color:var(--text)}
 .law p{color:var(--muted)}
@@ -113,7 +114,7 @@ input[type=range]:focus-visible{outline:2px solid var(--amber);outline-offset:4p
 
 /* rules / stats / captions */
 .rules{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--amber);
-  border-radius:12px;padding:22px 26px;margin:0 0 20px}
+  padding:22px 26px;margin:0 0 20px}
 .rules.bad{border-left-color:var(--coral)} .rules.good{border-left-color:var(--emerald)}
 .rules h3{font-family:var(--mono);font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;
   color:var(--amber);margin:0 0 14px;font-weight:700}
@@ -126,6 +127,8 @@ input[type=range]:focus-visible{outline:2px solid var(--amber);outline-offset:4p
 .stats div{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:13px 15px}
 .stats span{display:block;font-family:var(--mono);font-size:23px;font-weight:700;color:var(--amber);line-height:1.15}
 .stats em{font-style:normal;font-size:12px;color:var(--muted)}
+.statsrc{font-family:var(--mono);font-size:11.5px;line-height:1.45;letter-spacing:.04em;
+  color:var(--muted);margin:-12px 0 20px}
 .cap{padding:13px 18px;border-top:1px solid var(--line);background:var(--panel2);
   font-size:14.5px;min-height:52px;display:flex;align-items:center;color:var(--muted)}
 .cap b{color:var(--amber);margin-right:8px;font-family:var(--mono);font-size:12px;letter-spacing:.1em}
@@ -226,13 +229,13 @@ footer b{color:var(--text)}
   <h1>The Right Edge</h1>
   <p class="ed">SECOND EDITION — THE MECHANISM CUT</p>
   <div class="laws">
-    <div class="law"><h3>LAW 1 · THE WALL</h3>
+    <div class="law"><h2>LAW 1 · THE WALL</h2>
       <p><b>The flat line is the wall. The sloping line is the pressure.</b>
       Pressure rising into a ceiling breaks up. Pressure falling onto a floor breaks down.</p></div>
-    <div class="law"><h3>LAW 2 · THE VERDICT</h3>
+    <div class="law"><h2>LAW 2 · THE VERDICT</h2>
       <p><b>No close, no trade.</b> Wicks are rumors. Mid-bar prices are rumors.
       The close is the only verdict.</p></div>
-    <div class="law"><h3>LAW 3 · THE SLOPE</h3>
+    <div class="law"><h2>LAW 3 · THE SLOPE</h2>
       <p><b>The slope is the edge.</b> A flat EMA is chop in a costume.
       And the tiers: <b>9 grades · 20 confirms · 200 gates.</b></p></div>
   </div>
@@ -306,6 +309,7 @@ footer b{color:var(--text)}
     <div><span>~70%</span><em>reach target</em></div>
     <div><span>64%</span><em>throw back first</em></div>
   </div>
+  <p class="statsrc">Source: Bulkowski — daily stock charts, not Russell futures.</p>
   <div class="rules">
     <h3>Rules</h3>
     <ol>
@@ -329,6 +333,7 @@ footer b{color:var(--text)}
     <div><span>64%</span><em>break downward</em></div>
     <div><span>57%</span><em>pull back first</em></div>
   </div>
+  <p class="statsrc">Source: Bulkowski — daily stock charts, not Russell futures.</p>
   <div class="rules">
     <h3>Rules</h3>
     <ol>
@@ -699,7 +704,7 @@ class Tape{
         <button class="btn pri" data-a="play">▶ Play</button>
         <button class="btn sm" data-a="reset">↻</button>
       </div>
-      <canvas height="440"></canvas>
+      <canvas height="440" aria-label="${cfg.title} candle tape"></canvas>
       <div class="cap"><b>READY</b> <span></span></div>
       <div class="scrub">
         <input type="range" min="0" max="${cfg.data.length-1}" value="0" aria-label="Scrub the tape">
@@ -731,8 +736,21 @@ class Tape{
   play(){
     if(this.k>=this.g.data.length-1){ this.answered=false;
       this.dec.classList.remove("show"); this.set(0,true); }
+    if(RM){ this.still(); return; }
     this.playing=true; this.pbtn.textContent="❚❚ Pause";
-    this.timer=setInterval(()=>this.tickFwd(), RM?1:270);
+    this.timer=setInterval(()=>this.tickFwd(), 270);
+  }
+  /* Reduced motion: never run the loop at any speed. Land directly on the frame
+     the lesson exists for — the decision bar — instead of sprinting past it. */
+  still(){
+    const g=this.g;
+    if(!this.answered && g.liar){
+      this.set(g.liar.i,true); this.dev=g.liar.pauseAt; this.draw(); this.ask();
+    }else if(!this.answered && g.decide){
+      this.set(g.decide.at,true); this.ask();
+    }else{
+      this.set(g.data.length-1,true); if(g.onEnd) g.onEnd();
+    }
   }
   pause(){ this.playing=false; clearInterval(this.timer);
     this.pbtn.textContent = this.k>=this.g.data.length-1 ? "↻ Replay" : "▶ Play"; }

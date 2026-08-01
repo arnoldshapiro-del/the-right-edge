@@ -3,23 +3,3 @@ Thumbs.db
 *.bak
 backups/
 .vercel/
-
-# impeccable-ignore-start
-# Machine-local and ephemeral design-tool artifacts. Everything NOT listed here
-# stays tracked on purpose — see the keep-tracked note at the bottom of this block.
-.impeccable/config.local.json
-.impeccable/live/inject-journal.json
-.impeccable/live/roots.json
-.impeccable/live/sessions/
-.impeccable/mocks/
-.impeccable/sketches/
-.impeccable/**/*.png
-screenshots/
-/*.png
-
-# Deliberately TRACKED (do not add these to the list above):
-#   .impeccable/config.json        - shared detector config + locked-font whitelist
-#   .impeccable/live/config.json   - shared live-mode config
-#   .impeccable/design.json        - shared design-system sidecar
-#   .impeccable/critique/*.md      - critique snapshots / backlog
-# impeccable-ignore-end
