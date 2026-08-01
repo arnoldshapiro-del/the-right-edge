@@ -1,0 +1,9 @@
+# Design-tooling and internal project docs. Tracked in git (GitHub is the source of
+# truth) but never published to the live site. The deployed surface stays exactly
+# index.html + its configs.
+.claude/
+.impeccable/
+PRODUCT.md
+DESIGN.md
+CLAUDE.md
+SESSION_NOTES.md
