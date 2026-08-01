@@ -1087,13 +1087,18 @@ function drawWall(){
 function runWall(mode){
   clearInterval(WALL.t); WALL.mode=mode; WALL.phase=0; drawWall();
   const total=(mode==="wall"?WALL_PHASES:PEN_PHASES).length;
+  if(RM){ wallStill(total); return; }
   WALL.t=setInterval(()=>{
     if(WALL.phase>=total-1){ clearInterval(WALL.t); return; }
     WALL.phase++;
     if(mode==="wall"){ WALL.phase===8?breakSnd():eatSound(); } else tickSound();
     drawWall();
-  }, RM?1:1450);
+  }, 1450);
 }
+/* Reduced motion: never run the loop at any speed. Land directly on the frame
+   the lesson exists for — the emptied wall and its throwback — instead of
+   sprinting past it. */
+function wallStill(total){ WALL.phase=total-1; drawWall(); }
 document.getElementById("wallrun").onclick=()=>runWall("wall");
 document.getElementById("penrun").onclick =()=>runWall("pennant");
 drawWall(); addEventListener("resize",drawWall);
