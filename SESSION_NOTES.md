@@ -49,3 +49,32 @@ no console errors.
   browser import was the faster path regardless.
 - Global `CLAUDE.md` rule #1 was rewritten: "never Vercel CLI" retired and marked
   do-not-reinstate.
+
+## 2026-10-21 — Session memory: handoff rules, decision ledger, compaction instructions
+
+### What was asked
+Arnie asked that the reasons behind decisions survive new sessions and compaction,
+after Dylan Davis's video "ChatGPT & Claude Quietly Forget Mid-Task. One File Fixes It".
+
+### What changed
+- Added three sections to `CLAUDE.md`, modeled on who-dey-101-2026: "Session handoff
+  (do this every session)" and "Decisions and why (one line each, newest last)" right
+  after the identifying section, and "Compact Instructions" at the very end.
+- The decision ledger was built only from this repo's own CLAUDE.md, SESSION_NOTES.md
+  and commit messages; where a reason was never written down it says
+  "(reason not recorded)".
+- A separate `decisions.md` was ruled out because `CLAUDE.md` is the file Claude Code
+  re-reads after compaction.
+- Notes-only change. `index.html` and every config file are untouched; the app is
+  unchanged.
+
+### What was verified
+- `git diff --stat HEAD~1` after the push shows only `.md` files.
+- Live URL https://the-right-edge.vercel.app returns HTTP 200 (result recorded in the
+  final session reply).
+
+### What's next
+- Unchanged from 2026-07-23: optional Trade-or-Skip trainer as Section 12, PWA files,
+  gallery card in arnies-app-showcase, Netlify connect.
+- From now on, every settled decision gets one line in the CLAUDE.md ledger and every
+  session gets a dated entry here.

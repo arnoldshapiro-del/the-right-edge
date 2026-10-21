@@ -8,6 +8,27 @@ close test, EMA period arithmetic, flag tightness grading, and a 12-question
 interleaved exam. "Second Edition — the mechanism cut": it explains *why* each pattern
 works (resting orders, inventory, vacuum), not just what it looks like.
 
+## Session handoff (do this every session)
+- Start: read `SESSION_NOTES.md` (the dated journal) and `CONTINUATION.md` if present, before touching anything. The newest entry says what was decided, what was verified and what is next.
+- Wrap-up: add a dated entry to `SESSION_NOTES.md` with what was asked, what changed, what was verified (and how) and what is next. Commit and push it together with the work.
+- Every settled decision goes in the ledger below as ONE line: what we decided, why, and what was ruled out and why. Every correction Arnie gives gets logged with his reason. Reasons matter more than facts: facts can be re-derived from the code, reasons cannot.
+- Unsure what was agreed? Re-read this file and the journal before asking Arnie again.
+
+## Decisions and why (one line each, newest last)
+- M2K only, never MES or MNQ: Arnie clarified mid-session that he trades M2K exclusively on 15 / 5 / 2-minute charts with entries on the 2. Ruled out: keeping the original "M2K · MES" wording, because a second instrument muddies the teaching and does not match how he trades (2026-07-23).
+- Added a 15-minute button to the EMA time machine: Arnie's top chart is the 15-minute, and the toggle only had 2 and 5 (2026-07-23).
+- Deploy v2 only; v1 stays on disk, not deployed: two live apps teaching the same material would split attention. v1 is kept for its "Trade or Skip" chart trainer, worth porting back as Section 12 (2026-07-23).
+- Single-file architecture preserved; the narrator is this app's own inline version, not trend-check-pro's external `narrator.js`: an external file would break self-containment. Ruled out: adding any external file; port the saved-speed and sentence-highlight conveniences inline if wanted (2026-07-23).
+- Vercel via GitHub integration, not Netlify, for now: Netlify free build minutes were exhausted until August 1, 2026. `netlify.toml` kept in the repo so Netlify is connect-only later (2026-07-23).
+- Vercel deployed through the browser import, not the CLI: the CLI turned out to be neither installed nor authenticated, so the browser path was faster. The two locks that had blocked the CLI were removed on Arnie's explicit order; the global "never Vercel CLI" rule was retired and marked do-not-reinstate (2026-07-23).
+- Honesty posture kept: the four-condition close test is labeled "reasoned, not backtested" and the 0.25 × ATR(14) figure "a judgment call", because no published research measures close-distance-above-EMA on intraday futures. Ruled out: quoting any win rate here, because the sibling app's ES/NQ figures do not apply to Russell (2026-07-23).
+- Trading design system (Oxanium + Space Mono, amber/emerald/coral on dark navy), used for trading apps only and never elsewhere (reason for the palette itself not recorded) (2026-07-23).
+- Created/Revised date stamp added under Arnie's standing order of 2026-07-23 (reason not recorded) (2026-07-23).
+- Impeccable + Hallmark design skills added project-scoped on 2026-07-31, then removed the next day along with reduced-motion, stat-sourcing and accessibility fixes (reason for removal not recorded) (2026-08-01).
+- Private access gate, Google Sign-In for Arnie's account only: locks the trading app to his address using the same Firebase pattern proven on opening-edge-playbook and m2k-mastery; any other account is signed straight back out. Covered by the shared browser key's wildcard Netlify referrer, so no per-app Google console work (2026-08-01).
+- Sign-in gate pinned with `position:fixed; inset:0` and max z-index: a normal-flow gate can be clipped by a page whose CSS sets `html,body{overflow:hidden}`, which caused black screens on two sim-practice-video apps. Preventive here (2026-08-01).
+- Session memory lives in this file and `SESSION_NOTES.md`, never only in chat: cloud sessions start on a fresh computer, chat history gets compacted, and only files in the repo survive (2026-10-21, after Dylan Davis's "decisions.md" video). Ruled out: a separate decisions.md, because this file is the one Claude Code re-reads after compaction.
+
 ## Live URLs
 - **Production:** https://the-right-edge.vercel.app
 - **GitHub:** https://github.com/arnoldshapiro-del/the-right-edge
@@ -70,3 +91,12 @@ Russell. See memory `m2k-only-and-timeframes.md`.
   v2 dropped it. The exam tests concepts verbally; that trainer tested chart
   recognition. Worth porting back as Section 12. The v1 file is on disk, not deployed.
 - No gallery card in arnies-app-showcase yet.
+
+## Compact Instructions
+When this conversation is compacted, the summary must keep, in this order:
+1. Every decision made this session, with its reason and what was ruled out.
+2. Every correction Arnie gave, in his words where possible, and his reason.
+3. What has been verified and how (test run, build, live check with URL and time) versus what is only claimed or planned.
+4. What is next and what is still open, including anything waiting on Arnie's yes.
+5. The exact files changed, the branch, and whether the work is committed and pushed.
+Drop tool output, file contents and search results; they can be re-read from disk.
